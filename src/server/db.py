@@ -6,17 +6,18 @@ class Db:
         self.cur = self.con.cursor()
 
     def get_active_records(self):
-        self.cur.execute("SELECT values FROM data WHERE status='ACTIVE' ORDER BY id;")
+        self.cur.execute("SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;")
         return self.cur.fetchall()
 
     def get_all_records(self):
-        self.cur.execute("SELECT values FROM data ORDER BY id;")
+        self.cur.execute("SELECT value FROM data ORDER BY id;")
         return self.cur.fetchall()
 
     def add_value(self, val):
-        self.cur.execute("INSERT INTO data(value, status) VALUES(?, 'NEW');", val.value)
+        self.cur.execute(f"INSERT INTO data(value, status) VALUES('{val}', 'NEW');")
         self.con.commit()
 
     def set_status(self, idx, status):
-        self.cur.execute("UPDATE data SET status=? WHERE id=?;", (status.value,  idx.value))
+        sql = f"UPDATE data SET status='{status}' WHERE id='{idx}';"
+        s = self.cur.execute(sql)
         self.con.commit()

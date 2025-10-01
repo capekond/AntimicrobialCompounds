@@ -1,15 +1,18 @@
 from nicegui import ui
-import sqlite3
+import db
 
-@ui.page('/other_page')
-def other_page():
+@ui.page('/add_page')
+def add_page():
     ui.label('Add records')
 
-@ui.page('/dark_page')
-def dark_page():
+@ui.page('/see_page')
+def see_page():
     ui.label('See records')
 
-ui.link('Add records', other_page)
-ui.link('See records', dark_page)
+db = db.Db
+rec = db.get_active_records(db())
+
+ui.link('Add records', add_page)
+ui.link('See records', add_page)
 
 ui.run()
