@@ -7,11 +7,13 @@ class Db:
 
     def get_active_records(self):
         self.cur.execute("SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;")
-        return self.cur.fetchall()
+        res = [i[0] for i in self.cur.fetchall()]
+        return res
 
     def get_all_records(self):
         self.cur.execute("SELECT value FROM data ORDER BY id;")
-        return self.cur.fetchall()
+        res = [i[0] for i in self.cur.fetchall()]
+        return res
 
     def add_value(self, val):
         self.cur.execute(f"INSERT INTO data(value, status) VALUES('{val}', 'NEW');")
