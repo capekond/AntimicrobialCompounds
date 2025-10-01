@@ -5,7 +5,8 @@ import db
 
 @ui.page('/add_page')
 def add_page():
-    ui.label('Add records')
+    ui.label('Add record')
+    ui.input(label='Type number', placeholder='0.0', validation={'Must be real number': lambda value: len(value) < 20})
     ui.link('Go to main page', '/')
 
 @ui.page('/see_page')
