@@ -10,3 +10,4 @@ def tbl_data(cols, rval):
                  'align':  'right' if isinstance(rows[0][col], numbers.Number) else 'left' }
                 for col in cols[0]]
     return columns, rows
+
