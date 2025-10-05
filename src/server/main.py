@@ -3,6 +3,7 @@ from nicegui import ui
 import data_change
 import db
 import logging
+from logging.handlers import RotatingFileHandler
 
 @ui.page('/add_page')
 async def add_page():
@@ -22,16 +23,19 @@ def see_page():
     cols, rows = db.get_all_records()
     columns, rows = data_change.tbl_data(cols, rows)
     tbl = ui.table(columns=columns, rows=rows, selection='multiple')
-    ab = ui.button("Activate selected")
-    x = ui.button("Delete selected")
-    ui.link('Go to main page', '/')
+    ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
+    with ui.row():
+        ab = ui.button("Activate selected")
+        x = ui.button("Delete selected")
+        ui.link('Go to main page', '/')
+
 
 @ui.page('/csv_page')
 def csv_page():
     logging.debug("Visit csv page")
     ui.label('Export / import records')
     ui.checkbox("delete old data before import",value=False)
-    ui.button(text="Export data")
+    ui.button(text="Export data", on_click=data_change.export_csv(ui))
     ui.button(text="Import data")
     ui.link('Go to main page', '/')
 
@@ -42,27 +46,31 @@ def log_page():
     f = open("../../log/debug.log")
     log = ui.log()
     log.push("\n".join(f.readlines()[-100:]))
-    ui.button(text="Delete log", on_click=clear_log(log))
     ui.link('Go to main page', '/')
 
-def clear_log(log) -> None:
-    with open("../../log/debug.log", "r+") as f:
-        f.seek(0)
-        f.truncate()
-        print("xxxxx")
-        log.push("\n".join(f.readlines()[-100:]))
+log_formatter = logging.Formatter('%(asctime)s - [%(levelname)6s] - %(funcName)s - %(message)s')
+logFile = '../../log/debug.log'
+my_handler = RotatingFileHandler(logFile, mode='a', maxBytes=5*1024, backupCount=2, encoding=None)
+my_handler.setFormatter(log_formatter)
+my_handler.setLevel(logging.DEBUG)
+app_log = logging.getLogger('root')
+app_log.setLevel(logging.DEBUG)
+app_log.addHandler(my_handler)
+ui.add_css(shared=True,content="style.css")
 
-FORMAT = '%(asctime)s - [%(levelname)6s] - %(funcName)s - %(message)s'
-logging.basicConfig(format=FORMAT, filename="../../log/debug.log", level=logging.DEBUG)
-logging.info("Start application")
+logging.info("Start application...")
 res = db.get_active_records()
-ui.html('<strong>Information about active data<strong>')
-ui.label(f"Sum: {sum(res)}")
-ui.label(f"Count: {len(res)}")
-ui.label(f"Average: {statistics.mean(res)}")
-ui.link('Add records', add_page)
-ui.link('See records', see_page)
-ui.link('Export / import data', csv_page)
-ui.link('See log', log_page)
+ui.label('Information about active data').classes("title")
+with ui.grid(columns=2):
+    ui.label(f"Sum:")
+    ui.label(sum(res))
+    ui.label(f"Count:")
+    ui.label(sum(res))
+with ui.row():
+    ui.label(f"Average: {statistics.mean(res)}")
+    ui.link('Add records', add_page)
+    ui.link('See records', see_page)
+    ui.link('Export / import data', csv_page)
+    ui.link('See log', log_page)
 
 ui.run(reload=False)
