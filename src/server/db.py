@@ -35,6 +35,16 @@ def add_value(val):
     con.close()
     logging.info(f"SQL: {sql}")
 
+def update_status(selected):
+    logging.info(selected)
+    # sql = f"INSERT INTO data(value, status) VALUES('{val}', 'NEW');"
+    # con = sqlite3.connect("data.db")
+    # cur = con.cursor()
+    # cur.execute(sql)
+    # con.commit()
+    # con.close()
+    # logging.info(f"SQL: {sql}")
+
 def set_status(idx, status):
     sql = f"UPDATE data SET status='{status}' WHERE id='{idx}';"
     con = sqlite3.connect("data.db")

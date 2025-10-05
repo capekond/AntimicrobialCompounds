@@ -25,7 +25,7 @@ def see_page():
     tbl = ui.table(columns=columns, rows=rows, selection='multiple')
     ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
     with ui.row():
-        ab = ui.button("Activate selected")
+        ab = ui.button("Activate selected", on_click=db.update_status(tbl.selected))
         x = ui.button("Delete selected")
         ui.link('Go to main page', '/')
 
@@ -48,27 +48,20 @@ def log_page():
     log.push("\n".join(f.readlines()[-100:]))
     ui.link('Go to main page', '/')
 
-log_formatter = logging.Formatter('%(asctime)s - [%(levelname)6s] - %(funcName)s - %(message)s')
-logFile = '../../log/debug.log'
-my_handler = RotatingFileHandler(logFile, mode='a', maxBytes=5*1024, backupCount=2, encoding=None)
-my_handler.setFormatter(log_formatter)
-my_handler.setLevel(logging.DEBUG)
-app_log = logging.getLogger('root')
-app_log.setLevel(logging.DEBUG)
-app_log.addHandler(my_handler)
-ui.add_css(shared=True,content="style.css")
-
+data_change.set_logs()
 logging.info("Start application...")
+ui.add_css(shared=True,content="style.css")
 res = db.get_active_records()
 ui.label('Information about active data').classes("title")
 with ui.grid(columns=2):
     ui.label(f"Sum:")
     ui.label(sum(res))
     ui.label(f"Count:")
-    ui.label(sum(res))
+    ui.label(str(len(res)))
+    ui.label(f"Average: ")
+    ui.label(f"{statistics.mean(res)}")
 with ui.row():
-    ui.label(f"Average: {statistics.mean(res)}")
-    ui.link('Add records', add_page)
+    ui.link('\nAdd records', add_page)
     ui.link('See records', see_page)
     ui.link('Export / import data', csv_page)
     ui.link('See log', log_page)

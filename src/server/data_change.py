@@ -1,7 +1,17 @@
 import csv
 import logging
 import numbers
+from logging.handlers import RotatingFileHandler
 import db
+
+def set_logs():
+    log_formatter = logging.Formatter('%(asctime)s - [%(levelname)6s] - %(funcName)s - %(message)s')
+    my_handler = RotatingFileHandler('../../log/debug.log', mode='a', maxBytes=5*1024, backupCount=2, encoding=None)
+    my_handler.setFormatter(log_formatter)
+    my_handler.setLevel(logging.DEBUG)
+    app_log = logging.getLogger('root')
+    app_log.setLevel(logging.DEBUG)
+    app_log.addHandler(my_handler)
 
 def tbl_data(cols, rval):
     rows = [dict(zip(cols[0], row)) for row in rval]
