@@ -22,7 +22,7 @@ def see_page():
     ui.label('See records')
     cols, rows = db.get_all_records()
     columns, rows = data_change.tbl_data(cols, rows)
-    tbl = ui.table(columns=columns, rows=rows, selection='multiple')
+    tbl = ui.table(columns=columns, rows=rows, selection='multiple', pagination=10)
     ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
     with ui.row():
         ab = ui.button("Activate selected", on_click=db.update_status(tbl.selected))
