@@ -14,9 +14,11 @@ https://www.sqlite.org/
 - use only at intranet
 - no performance optimization
 ## TODO
-1. update database and refresh table
+1. user update database and refresh table
 2. user accesss login / logout
-3. log folder in git 
+3. add database password or token
+4. log folder in git
+5. catch and log errors. provide info to user 
 ## DONE
 
   
