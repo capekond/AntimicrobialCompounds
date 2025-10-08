@@ -13,3 +13,10 @@ https://www.sqlite.org/
 - no password, no encryption, no user 
 - use only at intranet
 - no performance optimization
+## TODO
+1. update database and refresh table
+2. user accesss login / logout
+3. log folder in git 
+## DONE
+
+  
