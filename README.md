@@ -18,7 +18,9 @@ https://www.sqlite.org/
 2. user accesss login / logout
 3. add database password or token
 4. log folder in git
-5. catch and log errors. provide info to user 
+5. catch and log errors. provide info to user
+6. use property file for global variable
+7. requirements file
 ## DONE
 
   
