@@ -1,4 +1,5 @@
 import statistics
+from operator import truth
 
 from docutils.nodes import status
 from nicegui import ui, events
@@ -7,48 +8,76 @@ import db
 import logging
 from logging.handlers import RotatingFileHandler
 
-selected_ids=[]
+selected_ids = []
 
 def add_status(selection):
     global selected_ids
     selected_ids = selection
     logging.debug(f"In table data selected row(s): {selected_ids}")
 
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
+
 @ui.page('/add_page')
 async def add_page():
     logging.debug("Visit add page")
     ui.label('Add record')
-    val = ui.input(label='Type number', placeholder='0.0', value="0.0")
-    b = ui.button('Add record', on_click=lambda:  ui.notify(f'value {val.value} added'))
+    val = ui.input(label='Type number', placeholder='0.0',
+                   validation=lambda value: None if is_number(value) else 'Not Number!')
+    b = ui.button('Add record', on_click=lambda: ui.notify(f'value {val.value} added'))
     ui.link('Go to main page', '/')
     while True:
         await b.clicked()
         db.add_value(val.value)
 
+
 @ui.page('/see_page')
 def see_page():
+    with ui.dialog() as dialog, ui.card():
+        ui.label('Are you sure?')
+        with ui.row():
+            ui.button('Yes', on_click=lambda: dialog.submit(True))
+            ui.button('No', on_click=lambda: dialog.submit(False))
+
+    async def approve_activate():
+        approve = await dialog
+        if approve:
+            db.update_status([sid['id'] for sid in selected_ids], "ACTIVE")
+            ui.navigate.to('/see_page', new_tab=False)
+
+    async def approve_delete():
+        approve = await dialog
+        if approve:
+            db.delete_rows([sid['id'] for sid in selected_ids])
+            ui.navigate.to('/see_page', new_tab=False)
+
     logging.debug("Visit see page")
     ui.label('See records')
-    l = ui.label("aa")
     cols, rows = db.get_all_records()
     columns, rows = data_change.tbl_data(cols, rows)
-    tbl = ui.table(columns=columns, rows=rows, selection='multiple', pagination=10, on_select=lambda e: add_status(e.selection))
+    tbl = ui.table(columns=columns, rows=rows, selection='multiple', pagination=10,
+                   on_select=lambda e: add_status(e.selection))
     ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
     with ui.row():
-        ab = ui.button("Activate selected", on_click=db.update_status([sid['id'] for sid in selected_ids], "ACTIVE"))
-        x = ui.button("Delete selected")
+        ui.button("Activate selected", on_click=approve_activate)
+        ui.button("Delete selected", on_click=approve_delete)
         ui.link('Go to main page', '/')
-
 
 
 @ui.page('/csv_page')
 def csv_page():
     logging.debug("Visit csv page")
     ui.label('Export / import records')
-    ui.checkbox("delete old data before import",value=False)
+    ui.checkbox("delete old data before import", value=False)
     ui.button(text="Export data", on_click=data_change.export_csv(ui))
     ui.button(text="Import data")
     ui.link('Go to main page', '/')
+
 
 @ui.page('/log_page')
 def log_page():
@@ -59,9 +88,10 @@ def log_page():
     log.push("\n".join(f.readlines()[-100:]))
     ui.link('Go to main page', '/')
 
+
 data_change.set_logs()
 logging.info("Start application...")
-ui.add_css(shared=True,content="style.css")
+ui.add_css(shared=True, content="style.css")
 res = db.get_active_records()
 ui.label('Information about active data').classes("title")
 with ui.grid(columns=2):
