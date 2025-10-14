@@ -10,9 +10,15 @@ from logging.handlers import RotatingFileHandler
 
 selected_ids = []
 
-def add_status(selection):
+def add_status(selection, ab: ui.button, ad:ui.button):
     global selected_ids
     selected_ids = selection
+    if len(selected_ids) > 0:
+        ab.enable()
+        ad.enable()
+    else:
+        ab.disable()
+        ad.disable()
     logging.debug(f"In table data selected row(s): {selected_ids}")
 
 def is_number(s):
@@ -39,18 +45,20 @@ async def add_page():
 @ui.page('/see_page')
 def see_page():
     with ui.dialog() as dialog, ui.card():
-        ui.label('Are you sure?')
+        d_label = ui.label()
         with ui.row():
             ui.button('Yes', on_click=lambda: dialog.submit(True))
             ui.button('No', on_click=lambda: dialog.submit(False))
 
     async def approve_activate():
+        d_label.set_text(f"Activate {len(selected_ids)} records?")
         approve = await dialog
         if approve:
             db.update_status([sid['id'] for sid in selected_ids], "ACTIVE")
             ui.navigate.to('/see_page', new_tab=False)
 
     async def approve_delete():
+        d_label.set_text(f"Delete {len(selected_ids)} records?")
         approve = await dialog
         if approve:
             db.delete_rows([sid['id'] for sid in selected_ids])
@@ -61,11 +69,13 @@ def see_page():
     cols, rows = db.get_all_records()
     columns, rows = data_change.tbl_data(cols, rows)
     tbl = ui.table(columns=columns, rows=rows, selection='multiple', pagination=10,
-                   on_select=lambda e: add_status(e.selection))
+                   on_select=lambda e: add_status(e.selection, ab, ad))
     ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
     with ui.row():
-        ui.button("Activate selected", on_click=approve_activate)
-        ui.button("Delete selected", on_click=approve_delete)
+        ab = ui.button("Activate selected", on_click=approve_activate)
+        ad = ui.button("Delete selected", on_click=approve_delete)
+        ab.disable()
+        ad.disable()
         ui.link('Go to main page', '/')
 
 
