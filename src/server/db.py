@@ -1,4 +1,5 @@
 import logging
+import pprint
 import sqlite3
 
 def get_active_records():
@@ -9,7 +10,9 @@ def get_active_records():
     res = [i[0] for i in cur.fetchall()]
     con.close()
     logging.info(f"SQL: {sql}")
+    logging.debug(f"Data: {res}")
     return res
+
 
 def get_all_records():
     sql="SELECT id, value, status FROM data ORDER BY id;"
@@ -22,10 +25,6 @@ def get_all_records():
     logging.info(f"SQL: {sql}")
     return  cols, rows
 
-
-def download_data():
-    pass
-
 def add_value(val):
     sql = f"INSERT INTO data(value, status) VALUES('{val}', 'NEW');"
     con = sqlite3.connect("data.db")
@@ -35,18 +34,8 @@ def add_value(val):
     con.close()
     logging.info(f"SQL: {sql}")
 
-def update_status(selected):
-    logging.info(selected)
-    # sql = f"INSERT INTO data(value, status) VALUES('{val}', 'NEW');"
-    # con = sqlite3.connect("data.db")
-    # cur = con.cursor()
-    # cur.execute(sql)
-    # con.commit()
-    # con.close()
-    # logging.info(f"SQL: {sql}")
-
-def set_status(idx, status):
-    sql = f"UPDATE data SET status='{status}' WHERE id='{idx}';"
+def update_status(sids:list[int], status: str):
+    sql = f"UPDATE data SET status = '{status}' WHERE ID IN ({",".join([str(ssid) for ssid in sids] ) });"
     con = sqlite3.connect("data.db")
     cur = con.cursor()
     cur.execute(sql)
@@ -54,8 +43,8 @@ def set_status(idx, status):
     con.close()
     logging.info(f"SQL: {sql}")
 
-def delete_rec(ids:list):
-    sql = f"DELETE FROM data WHERE id IN ({",".join(ids)});"
+def delete_rows(sids:list[int]):
+    sql = f"DELETE FROM data WHERE id IN ({",".join([str(ssid) for ssid in sids])});"
     con = sqlite3.connect("data.db")
     cur = con.cursor()
     cur.execute(sql)

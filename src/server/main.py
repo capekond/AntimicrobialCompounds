@@ -1,9 +1,18 @@
 import statistics
-from nicegui import ui
+
+from docutils.nodes import status
+from nicegui import ui, events
 import data_change
 import db
 import logging
 from logging.handlers import RotatingFileHandler
+
+selected_ids=[]
+
+def add_status(selection):
+    global selected_ids
+    selected_ids = selection
+    logging.debug(f"In table data selected row(s): {selected_ids}")
 
 @ui.page('/add_page')
 async def add_page():
@@ -20,14 +29,16 @@ async def add_page():
 def see_page():
     logging.debug("Visit see page")
     ui.label('See records')
+    l = ui.label("aa")
     cols, rows = db.get_all_records()
     columns, rows = data_change.tbl_data(cols, rows)
-    tbl = ui.table(columns=columns, rows=rows, selection='multiple', pagination=10)
+    tbl = ui.table(columns=columns, rows=rows, selection='multiple', pagination=10, on_select=lambda e: add_status(e.selection))
     ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
     with ui.row():
-        ab = ui.button("Activate selected", on_click=db.update_status(tbl.selected))
+        ab = ui.button("Activate selected", on_click=db.update_status([sid['id'] for sid in selected_ids], "ACTIVE"))
         x = ui.button("Delete selected")
         ui.link('Go to main page', '/')
+
 
 
 @ui.page('/csv_page')
