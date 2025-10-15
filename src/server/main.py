@@ -1,12 +1,8 @@
 import statistics
-from operator import truth
-
-from docutils.nodes import status
-from nicegui import ui, events
+from nicegui import ui
 import data_change
 import db
-import logging
-from logging.handlers import RotatingFileHandler
+from src.server.config import *
 
 selected_ids = []
 
@@ -71,7 +67,7 @@ def see_page():
     ui.label('See records')
     cols, rows = db.get_all_records()
     columns, rows = data_change.tbl_data(cols, rows)
-    tbl = ui.table(columns=columns, rows=rows, selection='multiple', pagination=10,
+    tbl = ui.table(columns=columns, rows=rows, selection='multiple', pagination=TBL_ROW_COUNT,
                    on_select=lambda e: add_status(e.selection, ab, ad))
     ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
     with ui.row():

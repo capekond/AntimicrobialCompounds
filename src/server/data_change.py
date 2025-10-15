@@ -1,16 +1,16 @@
 import csv
-import logging
 import numbers
 from logging.handlers import RotatingFileHandler
 import db
+from src.server.config import *
 
 def set_logs():
     log_formatter = logging.Formatter('%(asctime)s - [%(levelname)6s] - %(funcName)s - %(message)s')
     my_handler = RotatingFileHandler('../../log/debug.log', mode='a', maxBytes=5*1024, backupCount=2, encoding=None)
     my_handler.setFormatter(log_formatter)
-    my_handler.setLevel(logging.DEBUG)
+    my_handler.setLevel(LOG_LEVEL)
     app_log = logging.getLogger('root')
-    app_log.setLevel(logging.DEBUG)
+    app_log.setLevel(LOG_LEVEL)
     app_log.addHandler(my_handler)
 
 def tbl_data(cols, rval):

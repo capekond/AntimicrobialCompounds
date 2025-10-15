@@ -1,8 +1,10 @@
 import logging
 import sqlite3
+from config import *
+
 
 def _execute_sql(sql:str):
-    con = sqlite3.connect("data.db")
+    con = sqlite3.connect("../../data/data.db")
     cur = con.cursor()
     cur.execute(sql)
     try:
