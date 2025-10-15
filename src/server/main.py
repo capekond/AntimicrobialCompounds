@@ -21,11 +21,13 @@ def add_status(selection, ab: ui.button, ad:ui.button):
         ad.disable()
     logging.debug(f"In table data selected row(s): {selected_ids}")
 
-def is_number(s):
+def is_number(s, ba:ui.button):
     try:
         float(s)
+        ba.enable()
         return True
     except ValueError:
+        ba.disable()
         return False
 
 
@@ -34,11 +36,12 @@ async def add_page():
     logging.debug("Visit add page")
     ui.label('Add record')
     val = ui.input(label='Type number', placeholder='0.0',
-                   validation=lambda value: None if is_number(value) else 'Not Number!')
-    b = ui.button('Add record', on_click=lambda: ui.notify(f'value {val.value} added'))
+                   validation=lambda value: None if is_number(value, ba) else 'Not Number!')
+    ba = ui.button('Add record', on_click=lambda: ui.notify(f'value {val.value} added'))
+    ba.disable()
     ui.link('Go to main page', '/')
     while True:
-        await b.clicked()
+        await ba.clicked()
         db.add_value(val.value)
 
 
@@ -105,11 +108,11 @@ ui.add_css(shared=True, content="style.css")
 res = db.get_active_records()
 ui.label('Information about active data').classes("title")
 with ui.grid(columns=2):
-    ui.label(f"Sum:")
+    ui.label("Sum:")
     ui.label(sum(res))
-    ui.label(f"Count:")
+    ui.label("Count:")
     ui.label(str(len(res)))
-    ui.label(f"Average: ")
+    ui.label("Average: ")
     ui.label(f"{statistics.mean(res)}")
 with ui.row():
     ui.link('\nAdd records', add_page)
