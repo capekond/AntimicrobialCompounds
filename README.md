@@ -19,6 +19,8 @@ https://www.sqlite.org/
 5. catch and log errors, provide info to user
 7. requirements file
 8. fix problem with update on  main page
+9. can change welcome screen by markdown
+10. export pdf 
 
 ## DONE
 1. user update database and refresh table
