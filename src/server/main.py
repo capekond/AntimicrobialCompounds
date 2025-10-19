@@ -1,5 +1,5 @@
 import statistics
-from nicegui import ui
+from nicegui import ui, events
 import data_change
 import db
 from src.server.config import *
@@ -30,7 +30,7 @@ def is_number(s, ba:ui.button):
 @ui.page('/add_page')
 async def add_page():
     logging.debug("Visit add page")
-    ui.label('Add record')
+    ui.label('Add record').classes("title")
     val = ui.input(label='Type number', placeholder='0.0',
                    validation=lambda value: None if is_number(value, ba) else 'Not Number!')
     ba = ui.button('Add record', on_click=lambda: ui.notify(f'value {val.value} added'))
@@ -64,7 +64,7 @@ def see_page():
             ui.navigate.to('/see_page', new_tab=False)
 
     logging.debug("Visit see page")
-    ui.label('See records')
+    ui.label('See records').classes("title")
     cols, rows = db.get_all_records()
     columns, rows = data_change.tbl_data(cols, rows)
     tbl = ui.table(columns=columns, rows=rows, selection='multiple', pagination=TBL_ROW_COUNT,
@@ -80,18 +80,23 @@ def see_page():
 
 @ui.page('/csv_page')
 def csv_page():
+    columns = [{'name': 'row_cnt', 'label': 'Added rows', 'field': 'row_cnt'}]
     logging.debug("Visit csv page")
-    ui.label('Export / import records')
-    ui.checkbox("delete old data before import", value=False)
-    ui.button(text="Export data", on_click=data_change.export_csv(ui))
-    ui.button(text="Import data")
-    ui.link('Go to main page', '/')
-
+    ui.label('Export / import records').classes("title")
+    with ui.row():
+        with ui.column():
+            ui.button(text="Export data", on_click=None)
+            ui.checkbox("delete data before import", value=None)
+        with ui.column():
+            ui.upload(on_begin_upload=lambda e: tbl.set_visibility(True), on_upload=None )
+            tbl = ui.table(columns=columns, rows=[]).classes('h-52').props('virtual-scroll')
+            tbl.set_visibility(False)
+        ui.link('Go to main page', '/')
 
 @ui.page('/log_page')
 def log_page():
     logging.debug("Visit log page")
-    ui.label('Log')
+    ui.label('Log page').classes("title")
     f = open("../../log/debug.log")
     log = ui.log()
     log.push("\n".join(f.readlines()[-100:]))
