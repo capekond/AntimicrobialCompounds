@@ -86,8 +86,8 @@ def csv_page():
     with ui.row():
         with ui.column():
             ui.button(text="Export data", on_click=None)
-            ui.checkbox("delete data before import", value=None)
         with ui.column():
+            ui.checkbox("delete data before import", value=None)
             ui.upload(on_begin_upload=lambda e: tbl.set_visibility(True), on_upload=None )
             tbl = ui.table(columns=columns, rows=[]).classes('h-52').props('virtual-scroll')
             tbl.set_visibility(False)

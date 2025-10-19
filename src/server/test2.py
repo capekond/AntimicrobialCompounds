@@ -14,4 +14,4 @@ columns = [{'name': 'row_cnt', 'label': 'Added rows', 'field': 'row_cnt'}]
 tbl = ui.table(columns=columns, rows=[]).classes('h-52').props('virtual-scroll')
 tbl.set_visibility(False)
 
-ui.run()
+ui.run(title="Compounds")
