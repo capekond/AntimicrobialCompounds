@@ -3,6 +3,8 @@ from nicegui import ui, events
 import data_change
 import db
 from src.server.config import *
+from io import StringIO
+import pandas as pd
 
 selected_ids = []
 
@@ -25,6 +27,7 @@ def is_number(s, ba:ui.button):
     except ValueError:
         ba.disable()
         return False
+
 
 
 @ui.page('/add_page')
@@ -83,12 +86,20 @@ def csv_page():
     columns = [{'name': 'row_cnt', 'label': 'Added rows', 'field': 'row_cnt'}]
     logging.debug("Visit csv page")
     ui.label('Export / import records').classes("title")
+    def handle_upload(e: events.UploadEventArguments):
+        file_data = e.content.read()
+        data_str = file_data.decode('utf-8')
+        pd_data = pd.read_csv(StringIO(data_str))
+        print(pd_data)
+        tbl.set_visibility(True)
+        upload_info = db.upload_data(import_scope.value, pd_data)
+        tbl.add_row({'row_cnt': upload_info})
     with ui.row():
         with ui.column():
             ui.button(text="Export data", on_click=None)
         with ui.column():
-            ui.checkbox("delete data before import", value=None)
-            ui.upload(on_begin_upload=lambda e: tbl.set_visibility(True), on_upload=None )
+            import_scope = ui.radio({'delete': "Delete old", 'update': "Update old", 'leave': "Leave old values" })
+            ui.upload(on_upload=handle_upload, max_file_size=1_000_000).props('accept=.csv')
             tbl = ui.table(columns=columns, rows=[]).classes('h-52').props('virtual-scroll')
             tbl.set_visibility(False)
         ui.link('Go to main page', '/')
