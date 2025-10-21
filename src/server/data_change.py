@@ -1,8 +1,18 @@
 import csv
 import numbers
 from logging.handlers import RotatingFileHandler
+from nicegui import ui
 import db
 from src.server.config import *
+
+def is_number(s, ba: ui.button):
+    try:
+        float(s)
+        ba.enable()
+        return True
+    except ValueError:
+        ba.disable()
+        return False
 
 def set_logs():
     log_formatter = logging.Formatter('%(asctime)s - [%(levelname)6s] - %(funcName)s - %(message)s')

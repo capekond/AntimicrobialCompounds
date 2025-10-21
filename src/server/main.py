@@ -23,10 +23,18 @@ def main():
         ui.label(f"{statistics.mean(res)}")
         ui.link('Go to add page', '/add_page')
 
-
-def add_page():
-    ui.label('Main page content')
+async def add_page():
+    logging.debug("Visit add page")
+    ui.label('Add record').classes("title")
+    val = ui.input(label='Type number', placeholder='0.0',
+                   validation=lambda value: None if data_change.is_number(value, ba) else 'Not Number!')
+    ba = ui.button('Add record', on_click=lambda: ui.notify(f'value {val.value} added'))
+    ba.disable()
     ui.link('Go to main page', '/')
+    while True:
+        await ba.clicked()
+        db.add_value(val.value)
+
 
 data_change.set_logs()
 logging.info("Start application...")
