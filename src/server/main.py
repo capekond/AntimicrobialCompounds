@@ -21,7 +21,7 @@ def add_status(selection, ab: ui.button, ad: ui.button):
 
 
 def root():
-    ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/log_page': log_page })
+    ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/export_page': export_page, '/log_page': log_page })
 
 def main():
     res = db.get_active_records()
@@ -36,6 +36,7 @@ def main():
     with ui.row():
         ui.link('Go to add page', '/add_page')
         ui.link('Go to see page', '/see_page')
+        ui.link('Go to export cvs page', '/export_page')
         ui.link('Go to log page', '/log_page')
 
 
@@ -85,6 +86,15 @@ def see_page():
         ab.disable()
         ad.disable()
         ui.link('Go to main page', '/')
+
+async def export_page():
+    logging.debug("Visit export page")
+    ui.label('Export records').classes("title")
+    ed = ui.button(text="Export data")
+    ui.link('Go to main page', '/')
+    while True:
+        await ed.clicked()
+        data_change.export_csv()
 
 def log_page():
     logging.debug("Visit log page")

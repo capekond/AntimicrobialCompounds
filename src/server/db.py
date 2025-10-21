@@ -54,6 +54,10 @@ def delete_rows(sids:list[int]):
 def delete_all():
     _execute_sql("DELETE FROM data;")
 
+# def export_data():
+#     d = get_all_records()
+
+
 def upload_data(import_scope:str, df: pd.DataFrame) -> str:
     logging.info(f"Try to pload {len(pd.DataFrame)} records in scope {import_scope}")
     res = _data_import_error(df)
