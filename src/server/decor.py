@@ -1,4 +1,6 @@
 import db
+import logging
+from nicegui import ui
 
 
 def has_records(func):
@@ -6,11 +8,10 @@ def has_records(func):
         result = None
         x, res = db.get_all_records()
         if not res:
-            print("No action")
+            logging.warning ("Access to empty database")
+            ui.navigate.to("/welcome")
         else:
-            print(f"Before execution {res}")
             result = func(*args, **kwargs)
-            print("After execution")
         return result
     return wrapper
 

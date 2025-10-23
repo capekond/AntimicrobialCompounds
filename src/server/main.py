@@ -1,7 +1,5 @@
-import logging
 import statistics
-# from decor import *
-
+from decor import *
 from nicegui import ui, events
 import data_change
 import db
@@ -21,18 +19,6 @@ def add_status(selection, ab: ui.button, ad: ui.button):
         ab.disable()
         ad.disable()
     logging.debug(f"In table data selected row(s): {selected_ids}")
-
-def has_records(func):
-    def wrapper(*args, **kwargs):
-        result = None
-        x, res = db.get_all_records()
-        if not res:
-            logging.warning ("Access to empty database")
-            ui.navigate.to("/welcome")
-        else:
-            result = func(*args, **kwargs)
-        return result
-    return wrapper
 
 def root():
     ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page, '/export_page': export_page, '/log_page': log_page, "/welcome": welcome_page})
