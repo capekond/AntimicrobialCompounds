@@ -21,10 +21,10 @@ def add_status(selection, ab: ui.button, ad: ui.button):
 
 
 def root():
-    ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/export_page': export_page, '/log_page': log_page })
+    ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page, '/export_page': export_page, '/log_page': log_page })
 
 def main():
-    res = db.get_active_records()
+    res = db.get_records_ids()
     ui.label('Information about active data').classes("title")
     with ui.grid(columns=2):
         ui.label("Sum:")
@@ -36,6 +36,7 @@ def main():
     with ui.row():
         ui.link('Go to add page', '/add_page')
         ui.link('Go to see page', '/see_page')
+        ui.link('Go to import cvs page', '/import_page')
         ui.link('Go to export cvs page', '/export_page')
         ui.link('Go to log page', '/log_page')
 
@@ -86,6 +87,24 @@ def see_page():
         ab.disable()
         ad.disable()
         ui.link('Go to main page', '/')
+
+def import_page():
+
+    async def handle_upload(e: events.UploadEventArguments):
+        file_data = await e.file.text()
+        pd_data = pd.read_csv(StringIO(file_data))
+        tbl.set_visibility(True)
+        upload_info = db.upload_data(import_scope.value, pd_data)
+        tbl.add_row({'row_cnt': upload_info})
+    columns = [{'name': 'row_cnt', 'label': 'Added rows', 'field': 'row_cnt'}]
+    logging.debug("Visit import page")
+    ui.label('Import records').classes("title")
+    import_scope = ui.radio({'delete': "Delete old", 'update': "Update old", 'leave': "Leave old values"})
+    ui.upload(on_upload=handle_upload, max_file_size=1_000_000).props('accept=.csv')
+    tbl = ui.table(columns=columns, rows=[]).classes('h-52').props('virtual-scroll')
+    tbl.set_visibility(False)
+    ui.link('Go to main page', '/')
+
 
 async def export_page():
     logging.debug("Visit export page")

@@ -35,9 +35,11 @@ def _execute_sql(sql:str):
     logging.info(f"SQL: {sql}")
     return cols, rows
 
-def get_active_records():
-    cols, rows =_execute_sql("SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;")
-    return [i[0] for i in rows]
+def get_records_ids(status = 'ACTIVE') -> list[int]:
+    cols, rows =_execute_sql(f"SELECT value FROM data WHERE status='{status}' ORDER BY id;")
+    res = [int(i[0]) for i in rows]
+    logging.info(f"Get {len(res)} ids for status '{status}")
+    return res
 
 def get_all_records():
     return  _execute_sql("SELECT id, value, status FROM data ORDER BY id;")
@@ -59,7 +61,7 @@ def delete_all():
 
 
 def upload_data(import_scope:str, df: pd.DataFrame) -> str:
-    logging.info(f"Try to pload {len(pd.DataFrame)} records in scope {import_scope}")
+    logging.info(f"Try to pload {len(df.index)} records in scope {import_scope}")
     res = _data_import_error(df)
     if res:
         err = f"Cannot upload data: {res}"

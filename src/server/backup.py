@@ -111,7 +111,7 @@ def root():
     logging.info("Start application...")
     ui.add_css(shared=True, content="style.css")
     ui.sub_pages({'/add_page': add_page, '/see_page': see_page, '/csv_page' : csv_page, 'log_page' :log_page })
-    res = db.get_active_records()
+    res = db.get_records_ids()
     ui.label('Information about active data').classes("title")
     with ui.grid(columns=2):
         ui.label("Sum:")
