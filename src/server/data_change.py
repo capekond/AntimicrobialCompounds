@@ -1,4 +1,5 @@
 import csv
+import os
 import numbers
 from logging.handlers import RotatingFileHandler
 from nicegui import ui
@@ -46,9 +47,13 @@ def tbl_data(cols, rval):
     return columns, rows
 
 def export_csv():
+    FILE_PATH = 'data.csv'
     logging.info("Export / download file")
-    with open('data.csv', 'w') as file:
-        c, rows = db.get_all_records()
-        export_file = csv.writer(file)
-        export_file.writerows(rows)
-    ui.download('data.csv')
+    with open(FILE_PATH, 'w', newline='') as file:
+        cols, rows = db.get_all_records()
+        print(cols)
+        print(rows)
+        writer = csv.writer(file,doublequote=True, lineterminator="\n")
+        writer.writerow(cols)
+        writer.writerows(rows)
+    ui.download(FILE_PATH)

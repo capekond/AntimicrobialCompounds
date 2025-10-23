@@ -1,6 +1,20 @@
+import csv
+import os
+import numbers
+from logging.handlers import RotatingFileHandler
+from nicegui import ui
 import db
+from src.server.config import *
 
-# print(db.get_records_ids())
-# c, l = db.get_all_records()
-# print(c)
-# print(l)
+
+FILE_PATH = '../../tmp/data.csv'
+
+with open(FILE_PATH, 'w', newline='') as file:
+    cols, rows = db.get_all_records()
+    print(cols)
+    print(rows)
+    writer = csv.writer(file, doublequote=True, lineterminator="\n")
+    writer.writerow(cols)
+    writer.writerows(rows)
+# ui.download(FILE_PATH)
+# os.remove(FILE_PATH)
