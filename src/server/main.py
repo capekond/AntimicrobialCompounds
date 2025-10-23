@@ -114,7 +114,7 @@ def import_page():
     columns = [{'name': 'row_cnt', 'label': 'Added rows', 'field': 'row_cnt'}]
     logging.debug("Visit import page")
     ui.label('Import records').classes("title")
-    import_scope = ui.radio({'delete': "Delete old", 'update': "Update old", 'leave': "Leave old values"})
+    import_scope = ui.radio({'delete': "Delete old", 'update': "Update old", 'leave': "Leave old values"}, value='update')
     ui.upload(on_upload=handle_upload, max_file_size=1_000_000).props('accept=.csv')
     tbl = ui.table(columns=columns, rows=[]).classes('h-52').props('virtual-scroll')
     tbl.set_visibility(False)

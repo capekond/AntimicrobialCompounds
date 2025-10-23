@@ -47,7 +47,7 @@ def tbl_data(cols, rval):
     return columns, rows
 
 def export_csv():
-    FILE_PATH = 'data.csv'
+    FILE_PATH = '../../tmp/data.csv'
     logging.info("Export / download file")
     with open(FILE_PATH, 'w', newline='') as file:
         cols, rows = db.get_all_records()
