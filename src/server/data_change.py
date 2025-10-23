@@ -35,14 +35,14 @@ def set_logs():
     app_log.addHandler(my_handler)
 
 def tbl_data(cols, rval):
-    rows = [dict(zip(cols[0], row)) for row in rval]
+    rows = [dict(zip(cols, row)) for row in rval]
     columns = [ {'name': col,
                  'label': col.capitalize(),
                  'field': col,
                  'required': True,
                  'sortable': True,
                  'align':  'right' if isinstance(rows[0][col], numbers.Number) else 'left' }
-                for col in cols[0]]
+                for col in cols]
     return columns, rows
 
 def export_csv():

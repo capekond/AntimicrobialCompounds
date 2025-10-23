@@ -1,5 +1,7 @@
 import logging
 import sqlite3
+from typing import Any
+
 from sqlalchemy import create_engine
 import pandas as pd
 from config import *
@@ -26,9 +28,10 @@ def _execute_sql(sql:str):
     cur = con.cursor()
     cur.execute(sql)
     try:
-        cols = [i[0] for i in cur.description],
+        cols = [i[0] for i in cur.description]
     except TypeError:
         cols = []
+        logging.warning("No data in data table")
     rows = cur.fetchall()
     con.commit()
     con.close()
@@ -41,7 +44,7 @@ def get_records_ids(status = 'ACTIVE') -> list[int]:
     logging.info(f"Get {len(res)} ids for status '{status}")
     return res
 
-def get_all_records():
+def get_all_records() -> tuple[list[Any], list[Any]]:
     return  _execute_sql("SELECT id, value, status FROM data ORDER BY id;")
 
 def add_value(val):
@@ -55,10 +58,6 @@ def delete_rows(sids:list[int]):
 
 def delete_all():
     _execute_sql("DELETE FROM data;")
-
-# def export_data():
-#     d = get_all_records()
-
 
 def upload_data(import_scope:str, df: pd.DataFrame) -> str:
     logging.info(f"Try to pload {len(df.index)} records in scope {import_scope}")

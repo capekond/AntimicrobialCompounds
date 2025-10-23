@@ -1,4 +1,6 @@
 import statistics
+# from decor import *
+
 from nicegui import ui, events
 import data_change
 import db
@@ -19,27 +21,46 @@ def add_status(selection, ab: ui.button, ad: ui.button):
         ad.disable()
     logging.debug(f"In table data selected row(s): {selected_ids}")
 
+# def has_records(func):
+#     def wrapper(*args, **kwargs):
+#         x, res = db.get_all_records()
+#         if not res:
+#             ui.navigate.to("/welcome")
+#         else:
+#             func(*args, **kwargs)
 
 def root():
-    ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page, '/export_page': export_page, '/log_page': log_page })
+    # ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page, '/export_page': export_page, '/log_page': log_page, "/welcome": welcome_page})
+    ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page, '/export_page': export_page, '/log_page': log_page})
 
+# @has_records
 def main():
     res = db.get_records_ids()
     ui.label('Information about active data').classes("title")
-    with ui.grid(columns=2):
-        ui.label("Sum:")
-        ui.label(sum(res))
-        ui.label("Count:")
-        ui.label(str(len(res)))
-        ui.label("Average: ")
-        ui.label(f"{statistics.mean(res)}")
+    if not res:
+        logging.warning("No active data in database.")
+        ui.label("No active data in database. Nothing can be calculated.").classes("warning")
+    else:
+        with ui.grid(columns=2):
+            ui.label("Sum:")
+            ui.label(sum(res))
+            ui.label("Count:")
+            ui.label(str(len(res)))
+            ui.label("Average: ")
+            ui.label(f"{statistics.mean(res)}")
     with ui.row():
         ui.link('Go to add page', '/add_page')
         ui.link('Go to see page', '/see_page')
-        ui.link('Go to import cvs page', '/import_page')
-        ui.link('Go to export cvs page', '/export_page')
+        ui.link('Go to import page', '/import_page')
+        ui.link('Go to export page', '/export_page')
         ui.link('Go to log page', '/log_page')
 
+def welcome_page():
+    ui.label('Welcome new user, let put some data first').classes("title")
+    with ui.row():
+        ui.link('Go to add page', '/add_page')
+        ui.link('Go to import page', '/import_page')
+        ui.link('Go to log page', '/log_page')
 
 async def add_page():
     logging.debug("Visit add page")
@@ -53,6 +74,7 @@ async def add_page():
         await ba.clicked()
         db.add_value(val.value)
 
+# @has_records
 def see_page():
     with ui.dialog() as dialog, ui.card():
         d_label = ui.label()
@@ -105,7 +127,7 @@ def import_page():
     tbl.set_visibility(False)
     ui.link('Go to main page', '/')
 
-
+# @has_records
 async def export_page():
     logging.debug("Visit export page")
     ui.label('Export records').classes("title")
