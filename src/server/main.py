@@ -24,16 +24,20 @@ def add_status(selection, ab: ui.button, ad: ui.button):
 
 def has_records(func):
     def wrapper(*args, **kwargs):
+        result = None
         x, res = db.get_all_records()
         if not res:
+            logging.warning ("Access to empty database")
             ui.navigate.to("/welcome")
         else:
-            func(*args, **kwargs)
+            result = func(*args, **kwargs)
+        return result
+    return wrapper
 
 def root():
     ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page, '/export_page': export_page, '/log_page': log_page, "/welcome": welcome_page})
 
-# @has_records
+@has_records
 def main():
     res = db.get_records_ids()
     ui.label('Information about active data').classes("title")
@@ -77,7 +81,7 @@ async def add_page():
         await ba.clicked()
         db.add_value(val.value)
 
-# @has_records
+@has_records
 def see_page():
     with ui.dialog() as dialog, ui.card():
         d_label = ui.label()
@@ -130,7 +134,7 @@ def import_page():
     tbl.set_visibility(False)
     ui.link('Go to main page', '/')
 
-# @has_records
+@has_records
 async def export_page():
     logging.debug("Visit export page")
     ui.label('Export records').classes("title")
