@@ -1,3 +1,4 @@
+import logging
 import statistics
 # from decor import *
 
@@ -21,17 +22,16 @@ def add_status(selection, ab: ui.button, ad: ui.button):
         ad.disable()
     logging.debug(f"In table data selected row(s): {selected_ids}")
 
-# def has_records(func):
-#     def wrapper(*args, **kwargs):
-#         x, res = db.get_all_records()
-#         if not res:
-#             ui.navigate.to("/welcome")
-#         else:
-#             func(*args, **kwargs)
+def has_records(func):
+    def wrapper(*args, **kwargs):
+        x, res = db.get_all_records()
+        if not res:
+            ui.navigate.to("/welcome")
+        else:
+            func(*args, **kwargs)
 
 def root():
-    # ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page, '/export_page': export_page, '/log_page': log_page, "/welcome": welcome_page})
-    ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page, '/export_page': export_page, '/log_page': log_page})
+    ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page, '/export_page': export_page, '/log_page': log_page, "/welcome": welcome_page})
 
 # @has_records
 def main():
@@ -56,6 +56,9 @@ def main():
         ui.link('Go to log page', '/log_page')
 
 def welcome_page():
+    if db.no_data():
+        logging.warning("Useless access to welcome page via deep link")
+        ui.navigate.to("/")
     ui.label('Welcome new user, let put some data first').classes("title")
     with ui.row():
         ui.link('Go to add page', '/add_page')
