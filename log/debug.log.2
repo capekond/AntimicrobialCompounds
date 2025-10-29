@@ -1,60 +1,59 @@
-2025-10-29 18:49:07,886 - [ ERROR] - handle_exception - 'route'
+2025-10-29 19:47:11,485 - [  INFO] - login_page - Login ok as admin
+2025-10-29 19:47:11,493 - [  INFO] - set_login_role - User role is set to role
+2025-10-29 19:47:11,495 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-10-29 19:47:11,495 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-10-29 19:47:11,498 - [  INFO] - get_records_ids - Get 3 ids for status 'ACTIVE
+2025-10-29 19:47:13,383 - [ DEBUG] - log_page - Visit log page
+2025-10-29 19:55:13,614 - [  INFO] - <module> - Start application...
+2025-10-29 19:55:13,618 - [ DEBUG] - __init__ - Using proactor: IocpProactor
+2025-10-29 19:55:13,980 - [ DEBUG] - log_page - Visit log page
+2025-10-29 19:55:14,021 - [ DEBUG] - log_page - Visit log page
+2025-10-29 19:55:14,267 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-10-29 19:55:14,268 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-10-29 19:55:14,268 - [  INFO] - get_records_ids - Get 3 ids for status 'ACTIVE
+2025-10-29 19:55:16,384 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-10-29 19:55:16,389 - [ DEBUG] - see_page - Visit see page
+2025-10-29 19:55:16,389 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-10-29 19:55:19,561 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-10-29 19:55:19,563 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-10-29 19:55:19,563 - [  INFO] - get_records_ids - Get 3 ids for status 'ACTIVE
+2025-10-29 19:55:40,208 - [  INFO] - logout_page - Logout done
+2025-10-29 19:55:40,208 - [  INFO] - set_login_role - User role is set to 
+2025-10-29 19:55:40,208 - [WARNING] - wrapper - No login user
+2025-10-29 19:55:41,353 - [  INFO] - _execute_sql - SQL: SELECT * FROM users WHERE name='pepa' AND pwd = '123456';
+2025-10-29 19:55:41,353 - [  INFO] - login_page - Login ok as admin
+2025-10-29 19:55:41,353 - [  INFO] - set_login_role - User role is set to role
+2025-10-29 19:55:41,364 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-10-29 19:55:41,364 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-10-29 19:55:41,367 - [  INFO] - get_records_ids - Get 3 ids for status 'ACTIVE
+2025-10-29 20:24:39,934 - [ DEBUG] - log_page - Visit log page
+2025-10-29 20:24:39,943 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-10-29 20:24:39,943 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-10-29 20:24:39,943 - [  INFO] - get_records_ids - Get 3 ids for status 'ACTIVE
+2025-10-29 20:24:40,028 - [ DEBUG] - log_page - Visit log page
+2025-10-29 20:42:24,924 - [ DEBUG] - log_page - Visit log page
+2025-10-29 20:42:24,933 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-10-29 20:42:24,933 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-10-29 20:42:24,933 - [  INFO] - get_records_ids - Get 3 ids for status 'ACTIVE
+2025-10-29 20:42:24,938 - [ DEBUG] - log_page - Visit log page
+2025-10-29 21:14:15,828 - [ ERROR] - default_exception_handler - Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
 Traceback (most recent call last):
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\background_tasks.py", line 93, in _handle_exceptions
-    task.result()
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\functions\navigate.py", line 74, in navigate_sub_pages
-    await client.sub_pages_router._handle_navigate(path)  # pylint: disable=protected-access
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\sub_pages_router.py", line 68, in _handle_navigate
-    not self._other_page_builder_matches_path(path, client)  # `ui.sub_pages` is still responsible
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\sub_pages_router.py", line 81, in _other_page_builder_matches_path
-    client_route = client.request.scope['route']
-                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
-KeyError: 'route'
-2025-10-29 18:49:22,876 - [  INFO] - _execute_sql - SQL: SELECT * FROM users WHERE name='pepa' AND pwd = '123456';
-2025-10-29 18:49:22,876 - [  INFO] - login_page - Login ok as admin
-2025-10-29 18:49:22,891 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-10-29 18:49:22,891 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-10-29 18:49:22,891 - [  INFO] - get_records_ids - Get 2 ids for status 'ACTIVE
-2025-10-29 18:49:22,891 - [ ERROR] - handle_exception - 'route'
-Traceback (most recent call last):
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\background_tasks.py", line 93, in _handle_exceptions
-    task.result()
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\functions\navigate.py", line 74, in navigate_sub_pages
-    await client.sub_pages_router._handle_navigate(path)  # pylint: disable=protected-access
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\sub_pages_router.py", line 68, in _handle_navigate
-    not self._other_page_builder_matches_path(path, client)  # `ui.sub_pages` is still responsible
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\sub_pages_router.py", line 81, in _other_page_builder_matches_path
-    client_route = client.request.scope['route']
-                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
-KeyError: 'route'
-2025-10-29 18:51:31,983 - [ DEBUG] - prune_instances - Pruning stale client 313766fa-2f0e-4b58-b9bb-57b6d1ae43c8
-2025-10-29 18:53:23,516 - [  INFO] - <module> - Start application...
-2025-10-29 18:53:23,520 - [ DEBUG] - __init__ - Using proactor: IocpProactor
-2025-10-29 18:53:24,172 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-10-29 18:53:24,172 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-10-29 18:53:24,173 - [  INFO] - get_records_ids - Get 2 ids for status 'ACTIVE
-2025-10-29 19:01:12,296 - [  INFO] - <module> - Start application...
-2025-10-29 19:01:12,300 - [ DEBUG] - __init__ - Using proactor: IocpProactor
-2025-10-29 19:01:12,974 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-10-29 19:01:12,975 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-10-29 19:01:12,975 - [  INFO] - get_records_ids - Get 2 ids for status 'ACTIVE
-2025-10-29 19:01:13,799 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-10-29 19:01:13,801 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-10-29 19:01:13,801 - [  INFO] - get_records_ids - Get 2 ids for status 'ACTIVE
-2025-10-29 19:01:16,421 - [ ERROR] - handle_exception - 'route'
-Traceback (most recent call last):
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\events.py", line 433, in wait_for_result
-    await result
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\sub_pages_router.py", line 68, in _handle_navigate
-    not self._other_page_builder_matches_path(path, client)  # `ui.sub_pages` is still responsible
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\sub_pages_router.py", line 81, in _other_page_builder_matches_path
-    client_route = client.request.scope['route']
-                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
-KeyError: 'route'
-2025-10-29 19:02:59,064 - [  INFO] - <module> - Start application...
-2025-10-29 19:02:59,067 - [ DEBUG] - __init__ - Using proactor: IocpProactor
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] Stávající pøipojení bylo vynucenì ukonèeno vzdáleným hostitelem
+2025-10-29 21:35:06,887 - [ DEBUG] - log_page - Visit log page
+2025-10-29 21:35:06,913 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-10-29 21:35:06,913 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-10-29 21:35:06,913 - [  INFO] - get_records_ids - Get 3 ids for status 'ACTIVE
+2025-10-29 21:35:06,930 - [ DEBUG] - log_page - Visit log page
+2025-10-29 21:39:06,432 - [  INFO] - <module> - Start application...
+2025-10-29 21:39:06,436 - [ DEBUG] - __init__ - Using proactor: IocpProactor
+2025-10-29 21:39:07,106 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-10-29 21:39:07,107 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-10-29 21:39:07,107 - [  INFO] - get_records_ids - Get 3 ids for status 'ACTIVE
+2025-10-29 21:39:09,968 - [  INFO] - logout_page - Logout done
+2025-10-29 21:39:09,973 - [  INFO] - set_login_role - User role is set to 
+2025-10-29 21:39:09,973 - [WARNING] - wrapper - No login user

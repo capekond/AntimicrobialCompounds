@@ -1,8 +1,8 @@
-import logging
 import statistics
 from decor import *
 from nicegui import ui, events
 import data_change
+from data_change import is_admin
 import db
 from src.server.config import *
 from io import StringIO
@@ -47,7 +47,7 @@ async def login_page():
     role: str = db.get_rule(name.value, pwd.value)
     if role:
         logging.info(f"Login ok as {role}")
-        data_change.set_login_role("role")
+        data_change.set_login_role(role)
     else:
         logging.error(err)
         dialog.open()
@@ -169,11 +169,14 @@ def import_page():
 async def export_page():
     logging.debug("Visit export page")
     ui.label('Export records').classes("title")
+    ui.label("Sorry admin role is necessary, try login as different user.").visible =  not is_admin()
     ed = ui.button(text="Export data")
+    ed.visible = is_admin()
     ui.link('Go to main page', '/')
     while True:
         await ed.clicked()
         data_change.export_csv()
+
 @logged
 def log_page():
     logging.debug("Visit log page")

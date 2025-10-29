@@ -1,4 +1,5 @@
 import csv
+import logging
 import numbers
 from logging.handlers import RotatingFileHandler
 from nicegui import app, ui
@@ -58,10 +59,14 @@ def export_csv():
     ui.download(FILE_PATH)
 
 def set_login_role(role: str = ""):
-    app.storage.user['role'] = role
+    app.storage.user['role'] =  role
+    print(app.storage.user['role'])
+    logging.info ("User role is set to " + app.storage.user.get('role', ""))
 
 def get_login_role() -> str:
     return app.storage.user.get('role', "")
 
 def is_admin() -> bool:
-    return app.storage.user.get('role', "") == 'admin'
+    r = app.storage.user.get('role', "") == 'admin'
+    logging.info(f'User is { "" if r else "NOT "}admin')
+    return r
