@@ -1,6 +1,6 @@
-import logging
 import sqlite3
 from typing import Any
+
 
 from sqlalchemy import create_engine
 import pandas as pd
@@ -31,7 +31,7 @@ def _execute_sql(sql:str):
         cols = [i[0] for i in cur.description]
     except TypeError:
         cols = []
-        logging.warning("No data in data table")
+        logging.warning("No data in table")
     rows = cur.fetchall()
     con.commit()
     con.close()
@@ -85,3 +85,7 @@ def upload_data(import_scope:str, df: pd.DataFrame) -> str:
     info = df.to_sql('data', con=engine, if_exists='append')
     logging.info(f"Update affect {info} rows in data table.")
     return str(info)
+
+def get_rule(name: str, pwd: str) -> str:
+    c, r = _execute_sql(f"SELECT * FROM users WHERE name='{name}' AND pwd = '{pwd}';")
+    return r[0][2] if r else ""
