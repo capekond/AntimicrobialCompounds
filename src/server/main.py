@@ -23,6 +23,14 @@ def add_status(selection, ab: ui.button, ad: ui.button):
 def root():
     ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page, '/export_page': export_page, '/log_page': log_page, "/welcome": welcome_page})
 
+def login():
+    ui.label('Login page:').classes("title")
+    ui.input("Name:")
+    ui.input("Password:")
+    ui.checkbox("Stay logged", value=True)
+    ui.button("Login")
+
+@logged
 @has_records
 def main():
     res = db.get_records_ids()
