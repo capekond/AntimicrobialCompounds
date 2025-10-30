@@ -65,7 +65,7 @@ def main():
     else:
         with ui.grid(columns=2):
             ui.label("Sum:")
-            ui.label(sum(res))
+            ui.label(str(sum(res)))
             ui.label("Count:")
             ui.label(str(len(res)))
             ui.label("Average: ")
@@ -94,16 +94,18 @@ def welcome_page():
 async def add_page():
     logging.debug("Visit add page")
     ui.label('Add record').classes("title")
-    val = ui.input(label='Type number', placeholder='0.0',
-                   validation=lambda value: None if data_change.is_number(value, ba) else 'Not Number!')
-    ba = ui.button('Add record', on_click=lambda: ui.notify(f'value {val.value} added'))
-    ba.disable()
+    if is_admin():
+        val = ui.input(label='Type number', placeholder='0.0', validation=lambda value: None if data_change.is_number(value, ba) else 'Not Number!')
+        ba = ui.button('Add record', on_click=lambda: ui.notify(f'value {val.value} added'))
+        ba.disable()
+        while True:
+            await ba.clicked()
+            db.add_value(val.value)
+    else:
+        ui.label('Sorry, only admin can add records.')
     with ui.row():
         ui.link('logout', '/logout_page')
         ui.link('Go to main page', '/')
-    while True:
-        await ba.clicked()
-        db.add_value(val.value)
 
 @logged
 @has_records
@@ -132,14 +134,15 @@ def see_page():
     ui.label('See records').classes("title")
     cols, rows = db.get_all_records()
     columns, rows = data_change.tbl_data(cols, rows)
-    tbl = ui.table(columns=columns, rows=rows, selection='multiple', pagination=TBL_ROW_COUNT,
+    tbl = ui.table(columns=columns, rows=rows, selection= 'multiple' if is_admin() else None, pagination=TBL_ROW_COUNT,
                    on_select=lambda e: add_status(e.selection, ab, ad))
     ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
-    with ui.row():
-        ab = ui.button("Activate selected", on_click=approve_activate)
-        ad = ui.button("Delete selected", on_click=approve_delete)
-        ab.disable()
-        ad.disable()
+    if is_admin():
+        with ui.row():
+            ab = ui.button("Activate selected", on_click=approve_activate)
+            ad = ui.button("Delete selected", on_click=approve_delete)
+            ab.disable()
+            ad.disable()
     with ui.row():
         ui.link('logout', '/logout_page')
         ui.link('Go to main page', '/')
@@ -153,13 +156,17 @@ def import_page():
         tbl.set_visibility(True)
         upload_info = db.upload_data(import_scope.value, pd_data)
         tbl.add_row({'row_cnt': upload_info})
+
     columns = [{'name': 'row_cnt', 'label': 'Added rows', 'field': 'row_cnt'}]
     logging.debug("Visit import page")
     ui.label('Import records').classes("title")
-    import_scope = ui.radio({'delete': "Delete old", 'update': "Update old", 'leave': "Leave old values"}, value='update')
-    ui.upload(on_upload=handle_upload, max_file_size=1_000_000).props('accept=.csv')
-    tbl = ui.table(columns=columns, rows=[]).classes('h-52').props('virtual-scroll')
-    tbl.set_visibility(False)
+    if is_admin():
+        import_scope = ui.radio({'delete': "Delete old", 'update': "Update old", 'leave': "Leave old values"}, value='update')
+        ui.upload(on_upload=handle_upload, max_file_size=1_000_000).props('accept=.csv')
+        tbl = ui.table(columns=columns, rows=[]).classes('h-52').props('virtual-scroll')
+        tbl.set_visibility(False)
+    else:
+        ui.label("Only admin can import data.")
     with ui.row():
         ui.link('logout', '/logout_page')
         ui.link('Go to main page', '/')
@@ -169,10 +176,9 @@ def import_page():
 async def export_page():
     logging.debug("Visit export page")
     ui.label('Export records').classes("title")
-    ui.label("Sorry admin role is necessary, try login as different user.").visible =  not is_admin()
     ed = ui.button(text="Export data")
-    ed.visible = is_admin()
     ui.link('Go to main page', '/')
+    ui.link('logout', '/logout_page')
     while True:
         await ed.clicked()
         data_change.export_csv()
