@@ -7,6 +7,7 @@ import db
 from src.server.config import *
 from io import StringIO
 import pandas as pd
+import web_part as web
 
 selected_ids = []
 
@@ -70,13 +71,7 @@ def main():
             ui.label(str(len(res)))
             ui.label("Average: ")
             ui.label(f"{statistics.mean(res)}")
-    with ui.row():
-        ui.link('logout', '/logout_page')
-        ui.link('Go to add page', '/add_page')
-        ui.link('Go to see page', '/see_page')
-        ui.link('Go to import page', '/import_page')
-        ui.link('Go to export page', '/export_page')
-        ui.link('Go to log page', '/log_page')
+    web.footer(True,False,True,True,True, True, True)
 
 @logged
 def welcome_page():
@@ -84,11 +79,7 @@ def welcome_page():
         logging.warning("Useless access to welcome page via deep link")
         ui.navigate.to("/")
     ui.label('Welcome new user, let put some data first').classes("title")
-    with ui.row():
-        ui.link('logout', '/logout_page')
-        ui.link('Go to add page', '/add_page')
-        ui.link('Go to import page', '/import_page')
-        ui.link('Go to log page', '/log_page')
+    web.footer(True, False, True, False, True, False, True)
 
 @logged
 async def add_page():
@@ -98,14 +89,13 @@ async def add_page():
         val = ui.input(label='Type number', placeholder='0.0', validation=lambda value: None if data_change.is_number(value, ba) else 'Not Number!')
         ba = ui.button('Add record', on_click=lambda: ui.notify(f'value {val.value} added'))
         ba.disable()
+        web.footer(True, True)
         while True:
             await ba.clicked()
             db.add_value(val.value)
     else:
         ui.label('Sorry, only admin can add records.')
-    with ui.row():
-        ui.link('logout', '/logout_page')
-        ui.link('Go to main page', '/')
+        web.footer(True, True)
 
 @logged
 @has_records
@@ -143,9 +133,7 @@ def see_page():
             ad = ui.button("Delete selected", on_click=approve_delete)
             ab.disable()
             ad.disable()
-    with ui.row():
-        ui.link('logout', '/logout_page')
-        ui.link('Go to main page', '/')
+    web.footer(True, True)
 
 @logged
 def import_page():
@@ -167,9 +155,7 @@ def import_page():
         tbl.set_visibility(False)
     else:
         ui.label("Only admin can import data.")
-    with ui.row():
-        ui.link('logout', '/logout_page')
-        ui.link('Go to main page', '/')
+    web.footer(True, True)
 
 @logged
 @has_records
@@ -177,8 +163,7 @@ async def export_page():
     logging.debug("Visit export page")
     ui.label('Export records').classes("title")
     ed = ui.button(text="Export data")
-    ui.link('Go to main page', '/')
-    ui.link('logout', '/logout_page')
+    web.footer(True, True)
     while True:
         await ed.clicked()
         data_change.export_csv()
@@ -190,9 +175,7 @@ def log_page():
     f = open("../../log/debug.log")
     log = ui.log(max_lines=100).classes("w-screen")
     log.push("\n".join(f.readlines()[-100:]))
-    with ui.row():
-        ui.link('logout', '/logout_page')
-        ui.link('Go to main page', '/')
+    web.footer(True, True)
 
 data_change.set_logs()
 logging.info("Start application...")
