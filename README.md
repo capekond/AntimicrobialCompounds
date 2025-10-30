@@ -18,8 +18,7 @@ https://www.sqlite.org/
 7. requirements file
 8. fix problem with update on  main page
 9. can change welcome screen by markdown
-10. export pdf 
-11. links to shared function
+10. export pdf
 12. enable and disable login
 
 ## DONE
@@ -28,5 +27,6 @@ https://www.sqlite.org/
 9. disable ADD RECORD
 10. user access login / logout
 4. log folder in git
+11. links to shared function
 
   

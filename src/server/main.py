@@ -9,19 +9,6 @@ from io import StringIO
 import pandas as pd
 import web_part as web
 
-selected_ids = []
-
-def add_status(selection, ab: ui.button, ad: ui.button):
-    global selected_ids
-    selected_ids = selection
-    if len(selected_ids) > 0:
-        ab.enable()
-        ad.enable()
-    else:
-        ab.disable()
-        ad.disable()
-    logging.debug(f"In table data selected row(s): {selected_ids}")
-
 def root():
     ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page, '/export_page': export_page, '/log_page': log_page, "/welcome": welcome_page, "/login": login_page, "/logout_page": logout_page})
 
@@ -107,17 +94,17 @@ def see_page():
             ui.button('No', on_click=lambda: dialog.submit(False))
 
     async def approve_activate():
-        d_label.set_text(f"Activate {len(selected_ids)} records?")
+        d_label.set_text(f"Activate {len(web.selected_ids)} records?")
         approve = await dialog
         if approve:
-            db.update_status([sid['id'] for sid in selected_ids], "ACTIVE")
+            db.update_status([sid['id'] for sid in web.selected_ids], "ACTIVE")
             ui.navigate.reload()
 
     async def approve_delete():
-        d_label.set_text(f"Delete {len(selected_ids)} records?")
+        d_label.set_text(f"Delete {len(web.selected_ids)} records?")
         approve = await dialog
         if approve:
-            db.delete_rows([sid['id'] for sid in selected_ids])
+            db.delete_rows([sid['id'] for sid in web.selected_ids])
             ui.navigate.reload()
 
     logging.debug("Visit see page")
@@ -125,7 +112,7 @@ def see_page():
     cols, rows = db.get_all_records()
     columns, rows = data_change.tbl_data(cols, rows)
     tbl = ui.table(columns=columns, rows=rows, selection= 'multiple' if is_admin() else None, pagination=TBL_ROW_COUNT,
-                   on_select=lambda e: add_status(e.selection, ab, ad))
+                   on_select=lambda e: web.add_status(e.selection, ab, ad))
     ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
     if is_admin():
         with ui.row():
