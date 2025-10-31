@@ -13,6 +13,8 @@ def root():
     ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page, '/export_page': export_page, '/log_page': log_page, "/welcome": welcome_page, "/login": login_page, "/logout_page": logout_page})
 
 def logout_page():
+    if not LOGIN_ON:
+        ui.navigate.to("/")
     with ui.dialog() as dialog, ui.card():
         logging.info("Logout done")
         ui.label("Logout done")
@@ -23,6 +25,8 @@ def logout_page():
 
 
 async def login_page():
+    if not LOGIN_ON:
+        ui.navigate.to("/")
     err = "Cannot log name not exists or wrong password"
     with ui.dialog() as dialog, ui.card():
         ui.label(err)

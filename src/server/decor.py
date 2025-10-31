@@ -2,6 +2,7 @@ import db
 import logging
 from nicegui import ui
 import data_change
+from config import *
 
 def has_records(func):
     def wrapper(*args, **kwargs):
@@ -18,12 +19,13 @@ def has_records(func):
 def logged(func):
     def wrapper(*args, **kwargs):
         result = None
+        logging.info(f"User access is turn {'on.' if LOGIN_ON else  'off.'}")
         role: str = data_change.get_login_role()
-        if not role:
+        if role or (not LOGIN_ON):
+            result = func(*args, **kwargs)
+        else:
             logging.warning("No login user")
             ui.navigate.to("/login")
-        else:
-            result = func(*args, **kwargs)
         return result
     return wrapper
 

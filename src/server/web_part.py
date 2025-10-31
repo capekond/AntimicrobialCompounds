@@ -6,7 +6,7 @@ selected_ids = []
 def footer(logout: bool = False, main: bool = False, add: bool = False, see: bool = False, inport: bool = False,
            export: bool = False, log: bool = False):
     with ui.row():
-        ui.link('logout', '/logout_page').visible = logout
+        ui.link('logout', '/logout_page').visible = LOGIN_ON and logout
         ui.link('Go to main page', '/').visible = main
         ui.link('Go to add page', '/add_page').visible = add
         ui.link('Go to see page', '/see_page').visible = see
