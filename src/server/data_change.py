@@ -1,8 +1,8 @@
 import csv
-import os
+import logging
 import numbers
 from logging.handlers import RotatingFileHandler
-from nicegui import ui
+from nicegui import app, ui
 import db
 from src.server.config import *
 
@@ -27,7 +27,7 @@ def add_status(selection, ab: ui.button, ad: ui.button):
     logging.debug(f"In table data selected row(s): {selected_ids}")
 
 def set_logs():
-    log_formatter = logging.Formatter('%(asctime)s - [%(levelname)6s] - %(funcName)s - %(message)s')
+    log_formatter = logging.Formatter(LOG_FORMAT)
     my_handler = RotatingFileHandler('../../log/debug.log', mode='a', maxBytes=5*1024, backupCount=2, encoding=None)
     my_handler.setFormatter(log_formatter)
     my_handler.setLevel(LOG_LEVEL)
@@ -51,9 +51,19 @@ def export_csv():
     logging.info("Export / download file")
     with open(FILE_PATH, 'w', newline='') as file:
         cols, rows = db.get_all_records()
-        print(cols)
-        print(rows)
         writer = csv.writer(file,doublequote=True, lineterminator="\n")
         writer.writerow(cols)
         writer.writerows(rows)
     ui.download(FILE_PATH)
+
+def set_login_role(role: str = ""):
+    app.storage.user['role'] =  role
+    logging.info ("User role is set to " + app.storage.user.get('role', ""))
+
+def get_login_role() -> str:
+    return app.storage.user.get('role', "")
+
+def is_admin() -> bool:
+    r = app.storage.user.get('role', "") == 'admin'
+    logging.info(f'User is { "" if r else "NOT "}admin' if LOGIN_ON else "User access is switch off")
+    return r or (not LOGIN_ON)
