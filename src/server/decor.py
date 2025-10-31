@@ -1,5 +1,4 @@
 import db
-import logging
 from nicegui import ui
 import data_change
 from config import *
@@ -28,8 +27,3 @@ def logged(func):
             ui.navigate.to("/login")
         return result
     return wrapper
-
-@has_records
-def add(a, b):
-    return a + b
-print(add(5, 3))

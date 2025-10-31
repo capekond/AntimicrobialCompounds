@@ -88,5 +88,4 @@ def upload_data(import_scope:str, df: pd.DataFrame) -> str:
 
 def get_rule(name: str, pwd: str) -> str:
     c, r = _execute_sql(f"SELECT * FROM users WHERE name='{name}' AND pwd = '{pwd}';")
-    print(r[0][2])
     return r[0][2] if r else ""

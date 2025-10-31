@@ -17,10 +17,7 @@ https://www.sqlite.org/
 5. catch and log errors, provide info to user
 7. requirements file
 8. fix problem with update on  main page
-9. can change welcome screen by markdown
 10. export pdf
-12. enable and disable login
-
 ## DONE
 1. user update database and refresh table
 6. use property file for global variable
@@ -28,5 +25,6 @@ https://www.sqlite.org/
 10. user access login / logout
 4. log folder in git
 11. links to shared function
-
+12. enable and disable login
+13. can change welcome screen by markdown
   

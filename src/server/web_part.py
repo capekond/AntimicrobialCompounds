@@ -1,7 +1,48 @@
+import statistics
+import db
 from nicegui import ui
 from config import *
+from data_change import is_admin
 
 selected_ids = []
+
+def sys_info(title: str = "About..."):
+    async def show_edit():
+        with ui.dialog() as dialog, ui.card():
+            with open("../../data/sys_info.html", "r") as file:
+                cnt = file.read()
+            editor = ui.editor(value=cnt)
+            with ui.row():
+                ui.button('Save', on_click=lambda: dialog.submit(True))
+                ui.button('Cancel', on_click=lambda: dialog.submit(False))
+        approve = await dialog
+        if approve:
+            with open("../../data/sys_info.html", "w") as file:
+                file.write(editor.value)
+            ui.navigate.reload()
+
+    with open("../../data/sys_info.html", "r") as file:
+        content = file.read()
+    ui.label(title).classes('title')
+    with ui.row():
+        ui.html(content, sanitize=False)
+        edit = ui.button("Edit", on_click=show_edit)
+        edit.visible = is_admin()
+
+def data_info(title:str = 'Information about active data'):
+    res = db.get_records_ids()
+    ui.label(title).classes("title")
+    if not res:
+        logging.warning("No active data in database.")
+        ui.label("No active data in database. Nothing can be calculated.").classes("warning")
+    else:
+        with ui.grid(columns=2):
+                ui.label("Sum:")
+                ui.label(str(sum(res)))
+                ui.label("Count:")
+                ui.label(str(len(res)))
+                ui.label("Average: ")
+                ui.label(f"{statistics.mean(res)}")
 
 def footer(logout: bool = False, main: bool = False, add: bool = False, see: bool = False, inport: bool = False,
            export: bool = False, log: bool = False):

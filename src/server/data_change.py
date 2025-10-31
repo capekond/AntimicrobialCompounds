@@ -51,8 +51,6 @@ def export_csv():
     logging.info("Export / download file")
     with open(FILE_PATH, 'w', newline='') as file:
         cols, rows = db.get_all_records()
-        print(cols)
-        print(rows)
         writer = csv.writer(file,doublequote=True, lineterminator="\n")
         writer.writerow(cols)
         writer.writerows(rows)
@@ -60,7 +58,6 @@ def export_csv():
 
 def set_login_role(role: str = ""):
     app.storage.user['role'] =  role
-    print(app.storage.user['role'])
     logging.info ("User role is set to " + app.storage.user.get('role', ""))
 
 def get_login_role() -> str:

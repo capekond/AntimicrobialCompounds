@@ -31,6 +31,7 @@ async def login_page():
     with ui.dialog() as dialog, ui.card():
         ui.label(err)
         ui.button('OK', on_click=dialog.close)
+    web.sys_info()
     ui.label('Login page').classes("title")
     name = ui.input("Name:")
     pwd = ui.input("Password:", password=True, password_toggle_button=True)
@@ -49,19 +50,8 @@ async def login_page():
 @logged
 @has_records
 def main():
-    res = db.get_records_ids()
-    ui.label('Information about active data').classes("title")
-    if not res:
-        logging.warning("No active data in database.")
-        ui.label("No active data in database. Nothing can be calculated.").classes("warning")
-    else:
-        with ui.grid(columns=2):
-            ui.label("Sum:")
-            ui.label(str(sum(res)))
-            ui.label("Count:")
-            ui.label(str(len(res)))
-            ui.label("Average: ")
-            ui.label(f"{statistics.mean(res)}")
+    web.sys_info()
+    web.data_info()
     web.footer(True,False,True,True,True, True, True)
 
 @logged
@@ -69,7 +59,8 @@ def welcome_page():
     if db.no_data():
         logging.warning("Useless access to welcome page via deep link")
         ui.navigate.to("/")
-    ui.label('Welcome new user, let put some data first').classes("title")
+    web.sys_info('Welcome, let put some data first')
+
     web.footer(True, False, True, False, True, False, True)
 
 @logged
