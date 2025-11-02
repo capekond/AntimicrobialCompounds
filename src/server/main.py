@@ -13,7 +13,7 @@ import web_part as web
 def root():
     ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page,
                   '/export_page': export_page, '/log_page': log_page, "/welcome": welcome_page, "/login": login_page,
-                  "/logout_page": logout_page, "/users_page": users_page })
+                  "/logout_page": logout_page, "/users_page": users_page})
 
 
 def logout_page():
@@ -50,6 +50,7 @@ async def login_page():
         dialog.open()
         await dialog
     ui.navigate.to("/")
+
 
 @logged
 @has_records
@@ -114,7 +115,9 @@ def see_page():
     ui.label('See records').classes("title")
     cols, rows = db.get_all_records()
     columns, rows = data_change.tbl_data(cols, rows)
-    tbl = ui.table(columns=columns, rows=rows, selection='multiple' if is_admin() else None, pagination=TBL_ROW_COUNT,
+    print(columns, rows)
+    tbl = ui.table(columns=columns, rows=rows, selection='multiple' if is_admin() else None,
+                   pagination=TBL_ROW_COUNT,
                    on_select=lambda e: web.add_status(e.selection, [ab, ad]))
     ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
     if is_admin():
@@ -148,7 +151,6 @@ def import_page():
         ui.label("Only admin can import data.")
     web.footer(True, True)
 
-
 @logged
 @has_records
 async def export_page():
@@ -159,7 +161,6 @@ async def export_page():
     while True:
         await ed.clicked()
         data_change.export_csv()
-
 
 @logged
 def log_page():
@@ -174,11 +175,10 @@ def log_page():
 def users_page():
     with ui.dialog() as dialog, ui.card():
         d_label = ui.label()
-        username = ui.input("New user name:").value
-        old_pwd = ui.input("Old password:").value
-        new_pwd = ui.input("New password:").value
-        username = ui.input("Confirm new password:").value
-        role = ui.input("New user role:").value
+        username = ui.input("New user name:")
+        new_pwd = ui.input("New password:")
+        conf_pwd = ui.input("Confirm new password:")
+        role = ui.select({'admin': 'Admin', 'user': 'User'},label="Type:")
         with ui.row():
             ui.button('Go', on_click=lambda: dialog.submit(True))
             ui.button('Cancel', on_click=lambda: dialog.submit(False))
@@ -186,8 +186,11 @@ def users_page():
     async def approve_add():
         d_label.set_text(f"Add new user")
         approve = await dialog
+        if not new_pwd.value == conf_pwd.value:
+            ui.notify("Confirmation password not fit")
+            return
         if approve:
-            db.add_user(username,new_pwd,role)
+            db.add_user(username.value, new_pwd.value, role.value)
             ui.navigate.reload()
 
     async def approve_pwd():
@@ -208,12 +211,15 @@ def users_page():
     ui.label('User management').classes("title")
     cols, rows = db.get_users()
     columns, rows = data_change.tbl_data(cols, rows)
-    tbl = ui.table(columns=columns, rows=rows, selection='multiple' if is_admin() else None, pagination=TBL_ROW_COUNT,
-                   on_select=lambda e: web.add_status(e.selection, [b_pwd, b_delete]))
+    print(columns, rows)
+    tbl = ui.table(columns=columns, rows=rows, selection='multiple' if is_admin() else None,
+                   pagination=TBL_ROW_COUNT,
+                   on_select=lambda e: web.add_status(e.selection, [b_delete],
+                                                      [b_pwd]))
     ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
     if is_admin():
         with ui.row():
-            b_add = ui.button("Add User", on_click=approve_add)
+            ui.button("Add User", on_click=approve_add)
             b_pwd = ui.button("Change password", on_click=approve_pwd)
             b_delete = ui.button("Delete user", on_click=approve_delete)
             b_pwd.disable()

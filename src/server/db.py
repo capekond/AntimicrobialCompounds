@@ -91,10 +91,10 @@ def get_role(name: str, pwd: str) -> str:
     return r[0][2] if r else ""
 
 def get_users():
-    return None, None
+    return _execute_sql("SELECT name, role FROM users ORDER BY name;")
 
 def add_user(username: str ,new_pwd: str,role: str):
-    pass
+    _execute_sql(f"INSERT INTO users(name, pwd, role) VALUES('{username}','{new_pwd}','{role}');")
 
 def delete_user(usernames: list[str]):
     pass

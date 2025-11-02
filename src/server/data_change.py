@@ -35,10 +35,10 @@ def set_logs():
     app_log.setLevel(LOG_LEVEL)
     app_log.addHandler(my_handler)
 
-def tbl_data(cols, rval):
+def tbl_data(cols, rw):
     columns = rows = []
     try:
-        rows = [dict(zip(cols, row)) for row in rval]
+        rows = [dict(zip(cols, row)) for row in rw]
         columns = [ {'name': col,
                      'label': col.capitalize(),
                      'field': col,
