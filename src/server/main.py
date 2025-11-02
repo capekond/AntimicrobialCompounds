@@ -51,13 +51,6 @@ async def login_page():
         await dialog
     ui.navigate.to("/")
 
-
-@logged
-def users_page():
-    logging.debug("Visit users page")
-    ui.label('User management').classes("title")
-    web.footer(True, True)
-
 @logged
 @has_records
 def main():
@@ -177,6 +170,55 @@ def log_page():
     log.push("\n".join(f.readlines()[-100:]))
     web.footer(True, True)
 
+@logged
+def users_page():
+    with ui.dialog() as dialog, ui.card():
+        d_label = ui.label()
+        username = ui.input("New user name:").value
+        old_pwd = ui.input("Old password:").value
+        new_pwd = ui.input("New password:").value
+        username = ui.input("Confirm new password:").value
+        role = ui.input("New user role:").value
+        with ui.row():
+            ui.button('Go', on_click=lambda: dialog.submit(True))
+            ui.button('Cancel', on_click=lambda: dialog.submit(False))
+
+    async def approve_add():
+        d_label.set_text(f"Add new user")
+        approve = await dialog
+        if approve:
+            db.add_user(username,new_pwd,role)
+            ui.navigate.reload()
+
+    async def approve_pwd():
+        d_label.set_text(f"Set password for {len(web.selected_ids)} records?")
+        approve = await dialog
+        if approve:
+            db.change_pwd([sid['id'] for sid in web.selected_ids], new_pwd)
+            ui.navigate.reload()
+
+    async def approve_delete():
+        d_label.set_text(f"Delete {len(web.selected_ids)} users?")
+        approve = await dialog
+        if approve:
+            db.delete_user([sid['id'] for sid in web.selected_ids])
+            ui.navigate.reload()
+
+    logging.debug("Visit users page")
+    ui.label('User management').classes("title")
+    cols, rows = db.get_users()
+    columns, rows = data_change.tbl_data(cols, rows)
+    tbl = ui.table(columns=columns, rows=rows, selection='multiple' if is_admin() else None, pagination=TBL_ROW_COUNT,
+                   on_select=lambda e: web.add_status(e.selection, [b_pwd, b_delete]))
+    ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
+    if is_admin():
+        with ui.row():
+            b_add = ui.button("Add User", on_click=approve_add)
+            b_pwd = ui.button("Change password", on_click=approve_pwd)
+            b_delete = ui.button("Delete user", on_click=approve_delete)
+            b_pwd.disable()
+            b_delete.disable()
+    web.footer(True, True)
 
 data_change.set_logs()
 logging.info("Start application...")

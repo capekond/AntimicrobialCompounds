@@ -91,13 +91,13 @@ def get_role(name: str, pwd: str) -> str:
     return r[0][2] if r else ""
 
 def get_users():
+    return None, None
+
+def add_user(username: str ,new_pwd: str,role: str):
     pass
 
-def add_user(username: str):
+def delete_user(usernames: list[str]):
     pass
 
-def delete_user(username: str):
-    pass
-
-def change_pwd(username: str):
+def change_pwd(usernames: list[str], new_pwd):
     pass

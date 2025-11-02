@@ -1,5 +1,37 @@
-2025-11-02 08:41:07,333 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
-2025-11-02 08:41:07,337 - [ ERROR] - _render_error - sub page / produced an error
+2025-11-02 09:33:17,110 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-02 09:33:17,115 - [  INFO] - is_admin - User is admin
+2025-11-02 09:33:17,116 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-11-02 09:33:17,116 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
+2025-11-02 09:33:21,651 - [  INFO] - wrapper - User access is turn on.
+2025-11-02 09:33:21,653 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-02 09:33:21,654 - [ DEBUG] - see_page - Visit see page
+2025-11-02 09:33:21,655 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-02 09:33:21,656 - [  INFO] - is_admin - User is admin
+2025-11-02 09:33:21,658 - [  INFO] - is_admin - User is admin
+2025-11-02 09:33:24,449 - [  INFO] - wrapper - User access is turn on.
+2025-11-02 09:33:24,451 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-02 09:33:24,452 - [  INFO] - is_admin - User is admin
+2025-11-02 09:33:24,454 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-11-02 09:33:24,454 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
+2025-11-02 09:33:26,429 - [  INFO] - wrapper - User access is turn on.
+2025-11-02 09:33:26,432 - [ DEBUG] - users_page - Visit users page
+2025-11-02 09:33:26,432 - [ ERROR] - _render_error - sub page /users_page produced an error
+Traceback (most recent call last):
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\elements\sub_pages.py", line 101, in _render_page
+    result = match.builder(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\server\decor.py", line 24, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\server\main.py", line 209, in users_page
+    cols, rows = db.get_users()
+    ^^^^^^^^^^
+TypeError: cannot unpack non-iterable NoneType object
+2025-11-02 09:36:25,571 - [  INFO] - <module> - Start application...
+2025-11-02 09:36:25,573 - [ DEBUG] - __init__ - Using proactor: IocpProactor
+2025-11-02 09:36:25,687 - [  INFO] - wrapper - User access is turn on.
+2025-11-02 09:36:25,689 - [ DEBUG] - users_page - Visit users page
+2025-11-02 09:36:25,690 - [ ERROR] - _render_error - sub page /users_page produced an error
 Traceback (most recent call last):
   File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
     await app(scope, receive, sender)
@@ -22,44 +54,17 @@ Traceback (most recent call last):
   File "C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\server\decor.py", line 24, in wrapper
     result = func(*args, **kwargs)
              ^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\server\decor.py", line 14, in wrapper
-    result = func(*args, **kwargs)
-             ^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\server\main.py", line 66, in main
-    web.footer(True, False, True, True, True, True, True, True)
-TypeError: footer() takes from 0 to 7 positional arguments but 8 were given
-2025-11-02 08:42:41,419 - [  INFO] - <module> - Start application...
-2025-11-02 08:42:41,422 - [ DEBUG] - __init__ - Using proactor: IocpProactor
-2025-11-02 08:42:42,052 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 08:42:42,053 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 08:42:42,055 - [  INFO] - is_admin - User is admin
-2025-11-02 08:42:42,056 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-11-02 08:42:42,056 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
-2025-11-02 08:42:42,965 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 08:42:42,965 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 08:42:43,015 - [  INFO] - is_admin - User is admin
-2025-11-02 08:42:43,016 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-11-02 08:42:43,016 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
-2025-11-02 08:42:45,876 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 08:42:45,876 - [ DEBUG] - users_page - Visit users page
-2025-11-02 08:42:52,600 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 08:42:52,601 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 08:42:52,602 - [  INFO] - is_admin - User is admin
-2025-11-02 08:42:52,603 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-11-02 08:42:52,603 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
-2025-11-02 08:43:21,914 - [  INFO] - <module> - Start application...
-2025-11-02 08:43:21,917 - [ DEBUG] - __init__ - Using proactor: IocpProactor
-2025-11-02 08:43:22,004 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 08:43:22,005 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 08:43:22,008 - [  INFO] - is_admin - User is admin
-2025-11-02 08:43:22,008 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-11-02 08:43:22,009 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
-2025-11-02 08:43:22,089 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 08:43:22,091 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 08:43:22,092 - [  INFO] - is_admin - User is admin
-2025-11-02 08:43:22,093 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-11-02 08:43:22,093 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
-2025-11-02 08:43:22,524 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 08:43:22,525 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 08:43:22,527 - [  INFO] - is_admin - User is admin
-2025-11-02 08:43:22,528 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+  File "C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\server\main.py", line 210, in users_page
+    columns, rows = data_change.tbl_data(cols, rows)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\server\data_change.py", line 39, in tbl_data
+    rows = [dict(zip(cols, row)) for row in rval]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not iterable
+2025-11-02 09:36:25,722 - [  INFO] - wrapper - User access is turn on.
+2025-11-02 09:36:25,724 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-02 09:36:25,725 - [ DEBUG] - see_page - Visit see page
+2025-11-02 09:36:25,726 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-02 09:36:25,726 - [  INFO] - is_admin - User is admin
+2025-11-02 09:36:25,778 - [  INFO] - is_admin - User is admin
+2025-11-02 09:36:26,242 - [  INFO] - wrapper - User access is turn on.
