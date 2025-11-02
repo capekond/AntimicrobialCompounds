@@ -45,7 +45,7 @@ def data_info(title:str = 'Information about active data'):
                 ui.label(f"{statistics.mean(res)}")
 
 def footer(logout: bool = False, main: bool = False, add: bool = False, see: bool = False, inport: bool = False,
-           export: bool = False, log: bool = False):
+           export: bool = False, log: bool = False, users: bool = False):
     with ui.row():
         ui.link('logout', '/logout_page').visible = LOGIN_ON and logout
         ui.link('Go to main page', '/').visible = main
@@ -54,6 +54,7 @@ def footer(logout: bool = False, main: bool = False, add: bool = False, see: boo
         ui.link('Go to import page', '/import_page').visible = inport
         ui.link('Go to export page', '/export_page').visible = export
         ui.link('Go to log page', '/log_page').visible = log
+        ui.link('Go to users management', '/users_page').visible = users
 
 def add_status(selection, ab: ui.button, ad: ui.button):
     global selected_ids

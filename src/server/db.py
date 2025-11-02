@@ -86,6 +86,18 @@ def upload_data(import_scope:str, df: pd.DataFrame) -> str:
     logging.info(f"Update affect {info} rows in data table.")
     return str(info)
 
-def get_rule(name: str, pwd: str) -> str:
+def get_role(name: str, pwd: str) -> str:
     c, r = _execute_sql(f"SELECT * FROM users WHERE name='{name}' AND pwd = '{pwd}';")
     return r[0][2] if r else ""
+
+def get_users():
+    pass
+
+def add_user(username: str):
+    pass
+
+def delete_user(username: str):
+    pass
+
+def change_pwd(username: str):
+    pass

@@ -9,8 +9,12 @@ from io import StringIO
 import pandas as pd
 import web_part as web
 
+
 def root():
-    ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page, '/export_page': export_page, '/log_page': log_page, "/welcome": welcome_page, "/login": login_page, "/logout_page": logout_page})
+    ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page,
+                  '/export_page': export_page, '/log_page': log_page, "/welcome": welcome_page, "/login": login_page,
+                  "/logout_page": logout_page, "/users_page": users_page })
+
 
 def logout_page():
     if not LOGIN_ON:
@@ -37,7 +41,7 @@ async def login_page():
     pwd = ui.input("Password:", password=True, password_toggle_button=True)
     go = ui.button("Login")
     await go.clicked()
-    role: str = db.get_rule(name.value, pwd.value)
+    role: str = db.get_role(name.value, pwd.value)
     if role:
         logging.info(f"Login ok as {role}")
         data_change.set_login_role(role)
@@ -47,12 +51,20 @@ async def login_page():
         await dialog
     ui.navigate.to("/")
 
+
+@logged
+def users_page():
+    logging.debug("Visit users page")
+    ui.label('User management').classes("title")
+    web.footer(True, True)
+
 @logged
 @has_records
 def main():
     web.sys_info()
     web.data_info()
-    web.footer(True,False,True,True,True, True, True)
+    web.footer(True, False, True, True, True, True, True, True)
+
 
 @logged
 def welcome_page():
@@ -63,12 +75,14 @@ def welcome_page():
 
     web.footer(True, False, True, False, True, False, True)
 
+
 @logged
 async def add_page():
     logging.debug("Visit add page")
     ui.label('Add record').classes("title")
     if is_admin():
-        val = ui.input(label='Type number', placeholder='0.0', validation=lambda value: None if data_change.is_number(value, ba) else 'Not Number!')
+        val = ui.input(label='Type number', placeholder='0.0',
+                       validation=lambda value: None if data_change.is_number(value, ba) else 'Not Number!')
         ba = ui.button('Add record', on_click=lambda: ui.notify(f'value {val.value} added'))
         ba.disable()
         web.footer(True, True)
@@ -78,6 +92,7 @@ async def add_page():
     else:
         ui.label('Sorry, only admin can add records.')
         web.footer(True, True)
+
 
 @logged
 @has_records
@@ -106,7 +121,7 @@ def see_page():
     ui.label('See records').classes("title")
     cols, rows = db.get_all_records()
     columns, rows = data_change.tbl_data(cols, rows)
-    tbl = ui.table(columns=columns, rows=rows, selection= 'multiple' if is_admin() else None, pagination=TBL_ROW_COUNT,
+    tbl = ui.table(columns=columns, rows=rows, selection='multiple' if is_admin() else None, pagination=TBL_ROW_COUNT,
                    on_select=lambda e: web.add_status(e.selection, ab, ad))
     ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
     if is_admin():
@@ -117,9 +132,9 @@ def see_page():
             ad.disable()
     web.footer(True, True)
 
+
 @logged
 def import_page():
-
     async def handle_upload(e: events.UploadEventArguments):
         file_data = await e.file.text()
         pd_data = pd.read_csv(StringIO(file_data))
@@ -131,13 +146,15 @@ def import_page():
     logging.debug("Visit import page")
     ui.label('Import records').classes("title")
     if is_admin():
-        import_scope = ui.radio({'delete': "Delete old", 'update': "Update old", 'leave': "Leave old values"}, value='update')
+        import_scope = ui.radio({'delete': "Delete old", 'update': "Update old", 'leave': "Leave old values"},
+                                value='update')
         ui.upload(on_upload=handle_upload, max_file_size=1_000_000).props('accept=.csv')
         tbl = ui.table(columns=columns, rows=[]).classes('h-52').props('virtual-scroll')
         tbl.set_visibility(False)
     else:
         ui.label("Only admin can import data.")
     web.footer(True, True)
+
 
 @logged
 @has_records
@@ -150,6 +167,7 @@ async def export_page():
         await ed.clicked()
         data_change.export_csv()
 
+
 @logged
 def log_page():
     logging.debug("Visit log page")
@@ -158,6 +176,7 @@ def log_page():
     log = ui.log(max_lines=100).classes("w-screen")
     log.push("\n".join(f.readlines()[-100:]))
     web.footer(True, True)
+
 
 data_change.set_logs()
 logging.info("Start application...")
