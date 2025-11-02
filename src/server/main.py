@@ -122,7 +122,7 @@ def see_page():
     cols, rows = db.get_all_records()
     columns, rows = data_change.tbl_data(cols, rows)
     tbl = ui.table(columns=columns, rows=rows, selection='multiple' if is_admin() else None, pagination=TBL_ROW_COUNT,
-                   on_select=lambda e: web.add_status(e.selection, ab, ad))
+                   on_select=lambda e: web.add_status(e.selection, [ab, ad]))
     ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
     if is_admin():
         with ui.row():

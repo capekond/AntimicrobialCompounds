@@ -56,13 +56,9 @@ def footer(logout: bool = False, main: bool = False, add: bool = False, see: boo
         ui.link('Go to log page', '/log_page').visible = log
         ui.link('Go to users management', '/users_page').visible = users
 
-def add_status(selection, ab: ui.button, ad: ui.button):
+def add_status(selection, buttons: list[ui.button]):
     global selected_ids
     selected_ids = selection
-    if len(selected_ids) > 0:
-        ab.enable()
-        ad.enable()
-    else:
-        ab.disable()
-        ad.disable()
+    for button in buttons:
+        button.enable() if len(selected_ids) > 0 else button.disable()
     logging.debug(f"In table data selected row(s): {selected_ids}")
