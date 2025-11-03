@@ -87,14 +87,14 @@ def upload_data(import_scope:str, df: pd.DataFrame) -> str:
     return str(info)
 
 def get_role(name: str, pwd: str) -> str:
-    c, r = _execute_sql(f"SELECT * FROM users WHERE name='{name}' AND pwd = '{pwd}';")
+    c, r = _execute_sql(f"SELECT * FROM users WHERE id='{name}' AND pwd = '{pwd}';")
     return r[0][2] if r else ""
 
 def get_users():
-    return _execute_sql("SELECT name, role FROM users ORDER BY name;")
+    return _execute_sql("SELECT id, role FROM users ORDER BY id;")
 
 def add_user(username: str ,new_pwd: str,role: str):
-    _execute_sql(f"INSERT INTO users(name, pwd, role) VALUES('{username}','{new_pwd}','{role}');")
+    _execute_sql(f"INSERT INTO users(id, pwd, role) VALUES('{username}','{new_pwd}','{role}');")
 
 def delete_user(usernames: list[str]):
     pass

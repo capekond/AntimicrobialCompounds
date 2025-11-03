@@ -1,64 +1,63 @@
-2025-11-02 12:41:45,290 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 12:41:45,295 - [  INFO] - is_admin - User is admin
-2025-11-02 12:41:45,297 - [  INFO] - is_admin - User is admin
-2025-11-02 12:42:00,883 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 12:42:00,883 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 12:42:00,883 - [ DEBUG] - see_page - Visit see page
-2025-11-02 12:42:00,883 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 12:42:00,883 - [  INFO] - is_admin - User is admin
-2025-11-02 12:42:00,883 - [  INFO] - is_admin - User is admin
-2025-11-02 12:42:03,019 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 12:42:03,019 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 12:42:03,019 - [ DEBUG] - see_page - Visit see page
-2025-11-02 12:42:03,019 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 12:42:03,019 - [  INFO] - is_admin - User is admin
-2025-11-02 12:42:03,033 - [  INFO] - is_admin - User is admin
-2025-11-02 12:42:05,748 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 12:42:05,750 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 12:42:05,753 - [  INFO] - is_admin - User is admin
-2025-11-02 12:42:05,754 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-11-02 12:42:05,754 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
-2025-11-02 12:42:43,834 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 12:42:43,835 - [ DEBUG] - add_page - Visit add page
-2025-11-02 12:42:43,836 - [  INFO] - is_admin - User is admin
-2025-11-02 12:42:58,233 - [ ERROR] - handle_exception - database is locked
+2025-11-02 21:16:34,619 - [  INFO] - is_admin - User is admin
+2025-11-02 21:16:34,621 - [  INFO] - is_admin - User is admin
+2025-11-03 08:01:13,776 - [  INFO] - <module> - Start application...
+2025-11-03 08:01:13,782 - [ DEBUG] - __init__ - Using proactor: IocpProactor
+2025-11-03 08:01:14,444 - [  INFO] - wrapper - User access is turn on.
+2025-11-03 08:01:14,445 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-03 08:01:14,446 - [  INFO] - is_admin - User is admin
+2025-11-03 08:01:14,446 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-11-03 08:01:14,446 - [  INFO] - get_records_ids - Get 6 ids for status 'ACTIVE
+2025-11-03 08:01:18,282 - [  INFO] - wrapper - User access is turn on.
+2025-11-03 08:01:18,285 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-03 08:01:18,288 - [ DEBUG] - see_page - Visit see page
+2025-11-03 08:01:18,289 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-03 08:01:18,289 - [  INFO] - is_admin - User is admin
+2025-11-03 08:01:18,290 - [  INFO] - is_admin - User is admin
+2025-11-03 08:01:20,203 - [ DEBUG] - add_status - In table data selected row(s): [{'id': 519, 'value': 15, 'status': 'ACTIVE'}]
+2025-11-03 08:01:21,771 - [ DEBUG] - add_status - In table data selected row(s): [{'id': 519, 'value': 15, 'status': 'ACTIVE'}, {'id': 518, 'value': 15, 'status': 'ACTIVE'}]
+2025-11-03 08:01:39,457 - [  INFO] - wrapper - User access is turn on.
+2025-11-03 08:01:39,457 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-03 08:01:39,458 - [  INFO] - is_admin - User is admin
+2025-11-03 08:01:39,459 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-11-03 08:01:39,459 - [  INFO] - get_records_ids - Get 6 ids for status 'ACTIVE
+2025-11-03 08:01:41,057 - [  INFO] - wrapper - User access is turn on.
+2025-11-03 08:01:41,063 - [ DEBUG] - users_page - Visit users page
+2025-11-03 08:01:41,064 - [  INFO] - _execute_sql - SQL: SELECT name, role FROM users ORDER BY name;
+2025-11-03 08:01:41,064 - [  INFO] - is_admin - User is admin
+2025-11-03 08:01:41,065 - [  INFO] - is_admin - User is admin
+2025-11-03 08:01:47,026 - [ DEBUG] - add_status - In table data selected row(s): [{'name': 'josef', 'role': 'user'}]
+2025-11-03 08:01:48,290 - [ ERROR] - handle_exception - 'id'
 Traceback (most recent call last):
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\background_tasks.py", line 93, in _handle_exceptions
-    task.result()
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\elements\sub_pages.py", line 111, in background_task
-    await result
-  File "C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\server\main.py", line 85, in add_page
-    db.add_value(val.value)
-  File "C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\server\db.py", line 51, in add_value
-    _execute_sql(f"INSERT INTO data(value, status) VALUES('{val}', 'NEW');")
-  File "C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\server\db.py", line 29, in _execute_sql
-    cur.execute(sql)
-sqlite3.OperationalError: database is locked
-2025-11-02 12:43:00,388 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 12:43:00,390 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 12:43:00,394 - [  INFO] - is_admin - User is admin
-2025-11-02 12:43:00,397 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-11-02 12:43:00,397 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
-2025-11-02 12:43:06,434 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 12:43:06,436 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 12:43:06,440 - [ DEBUG] - see_page - Visit see page
-2025-11-02 12:43:06,443 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 12:43:06,443 - [  INFO] - is_admin - User is admin
-2025-11-02 12:43:06,445 - [  INFO] - is_admin - User is admin
-2025-11-02 12:43:19,644 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 12:43:19,645 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 12:43:19,647 - [  INFO] - is_admin - User is admin
-2025-11-02 12:43:19,649 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-11-02 12:43:19,649 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
-2025-11-02 12:43:22,842 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 12:43:22,843 - [ DEBUG] - log_page - Visit log page
-2025-11-02 12:43:52,413 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 12:43:52,415 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-02 12:43:52,417 - [  INFO] - is_admin - User is admin
-2025-11-02 12:43:52,419 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-11-02 12:43:52,419 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
-2025-11-02 12:43:54,545 - [  INFO] - wrapper - User access is turn on.
-2025-11-02 12:43:54,545 - [ DEBUG] - add_page - Visit add page
-2025-11-02 12:43:54,546 - [  INFO] - is_admin - User is admin
-2025-11-02 12:43:59,616 - [WARNING] - _execute_sql - No data in table
-2025-11-02 12:43:59,632 - [  INFO] - _execute_sql - SQL: INSERT INTO data(value, status) VALUES('212', 'NEW');
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\events.py", line 425, in handle_event
+    result = cast(Callable[[EventT], Any], handler)(arguments)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\elements\table.py", line 88, in handle_selection
+    self.selected = [row for row in self.selected if row[self.row_key] not in e.args['keys']]
+                                                     ~~~^^^^^^^^^^^^^^
+KeyError: 'id'
+2025-11-03 08:01:48,334 - [ ERROR] - handle_exception - 'id'
+Traceback (most recent call last):
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\events.py", line 425, in handle_event
+    result = cast(Callable[[EventT], Any], handler)(arguments)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\elements\table.py", line 88, in handle_selection
+    self.selected = [row for row in self.selected if row[self.row_key] not in e.args['keys']]
+                                                     ~~~^^^^^^^^^^^^^^
+KeyError: 'id'
+2025-11-03 08:01:49,442 - [ ERROR] - handle_exception - 'id'
+Traceback (most recent call last):
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\events.py", line 425, in handle_event
+    result = cast(Callable[[EventT], Any], handler)(arguments)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\elements\table.py", line 88, in handle_selection
+    self.selected = [row for row in self.selected if row[self.row_key] not in e.args['keys']]
+                                                     ~~~^^^^^^^^^^^^^^
+KeyError: 'id'
+2025-11-03 08:44:00,118 - [  INFO] - <module> - Start application...
+2025-11-03 08:44:00,125 - [ DEBUG] - __init__ - Using proactor: IocpProactor
+2025-11-03 08:44:17,688 - [  INFO] - <module> - Start application...
+2025-11-03 08:44:17,692 - [ DEBUG] - __init__ - Using proactor: IocpProactor
+2025-11-03 08:45:35,137 - [  INFO] - <module> - Start application...
+2025-11-03 08:45:35,142 - [ DEBUG] - __init__ - Using proactor: IocpProactor
+2025-11-03 08:45:36,373 - [  INFO] - wrapper - User access is turn on.
+2025-11-03 08:45:36,383 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
