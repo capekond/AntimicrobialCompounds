@@ -6,9 +6,6 @@ import data_change
 
 selected_ids = []
 
-
-
-
 def sys_info(title: str = "About..."):
     async def show_edit():
         with ui.dialog() as dialog, ui.card():

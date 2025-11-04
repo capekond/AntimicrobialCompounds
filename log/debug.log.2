@@ -1,64 +1,54 @@
-2025-11-04 19:36:26,960 - [ ERROR] - handle_exception - near "id": syntax error
+2025-11-04 19:37:36,180 - [  INFO] - is_admin - User is admin
+2025-11-04 19:37:36,186 - [  INFO] - is_admin - User is admin
+2025-11-04 19:37:43,646 - [  INFO] - wrapper - User access is turn on.
+2025-11-04 19:37:43,646 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-04 19:37:43,646 - [  INFO] - is_admin - User is admin
+2025-11-04 19:37:43,651 - [  INFO] - _execute_sql - Try execute SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-11-04 19:37:43,651 - [  INFO] - get_records_ids - Get 5 ids for status 'ACTIVE
+2025-11-04 19:37:46,487 - [  INFO] - wrapper - User access is turn on.
+2025-11-04 19:37:46,487 - [ DEBUG] - users_page - Visit users page
+2025-11-04 19:37:46,493 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, role FROM users ORDER BY id;
+2025-11-04 19:37:46,497 - [  INFO] - is_admin - User is admin
+2025-11-04 19:37:46,497 - [  INFO] - is_admin - User is admin
+2025-11-04 19:37:48,957 - [ DEBUG] - add_status - In table data selected row(s): [{'id': 'pepa', 'role': 'user'}]
+2025-11-04 19:37:55,018 - [  INFO] - _execute_sql - Try execute SQL: DELETE FROM users WHERE id IN ('pepa');
+2025-11-04 19:37:55,189 - [WARNING] - _execute_sql - No data in table
+2025-11-04 19:37:55,214 - [  INFO] - info_action - Delete  ''pepa''
+2025-11-04 19:37:55,259 - [  INFO] - wrapper - User access is turn on.
+2025-11-04 19:37:55,272 - [ DEBUG] - users_page - Visit users page
+2025-11-04 19:37:55,272 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, role FROM users ORDER BY id;
+2025-11-04 19:37:55,277 - [  INFO] - is_admin - User is admin
+2025-11-04 19:37:55,279 - [  INFO] - is_admin - User is admin
+2025-11-04 19:52:19,544 - [ DEBUG] - prune_instances - Pruning stale client db5b342a-2b29-4583-8f35-f0bb1ce4bc63
+2025-11-04 19:52:19,546 - [ ERROR] - default_exception_handler - Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
 Traceback (most recent call last):
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\events.py", line 433, in wait_for_result
-    await result
-  File "C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\server\main.py", line 105, in approve_activate
-    db.update_status(data_change.get_ids(), "ACTIVE")
-  File "C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\server\db.py", line 54, in update_status
-    _execute_sql(f"UPDATE data SET status = '{status}' WHERE ID IN ({sids});")
-  File "C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\server\db.py", line 30, in _execute_sql
-    cur.execute(sql)
-sqlite3.OperationalError: near "id": syntax error
-2025-11-04 19:36:53,892 - [  INFO] - <module> - Start application...
-2025-11-04 19:36:53,895 - [ DEBUG] - __init__ - Using proactor: IocpProactor
-2025-11-04 19:36:54,423 - [  INFO] - wrapper - User access is turn on.
-2025-11-04 19:36:54,423 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-04 19:36:54,426 - [ DEBUG] - see_page - Visit see page
-2025-11-04 19:36:54,426 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-04 19:36:54,427 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,476 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,552 - [  INFO] - wrapper - User access is turn on.
-2025-11-04 19:36:54,554 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-04 19:36:54,556 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,556 - [  INFO] - _execute_sql - Try execute SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-11-04 19:36:54,557 - [  INFO] - get_records_ids - Get 3 ids for status 'ACTIVE
-2025-11-04 19:36:54,570 - [  INFO] - wrapper - User access is turn on.
-2025-11-04 19:36:54,579 - [ DEBUG] - users_page - Visit users page
-2025-11-04 19:36:54,579 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, role FROM users ORDER BY id;
-2025-11-04 19:36:54,581 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,581 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,589 - [  INFO] - wrapper - User access is turn on.
-2025-11-04 19:36:54,591 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-04 19:36:54,593 - [ DEBUG] - see_page - Visit see page
-2025-11-04 19:36:54,593 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-04 19:36:54,593 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,595 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,627 - [  INFO] - wrapper - User access is turn on.
-2025-11-04 19:36:54,637 - [ DEBUG] - users_page - Visit users page
-2025-11-04 19:36:54,638 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, role FROM users ORDER BY id;
-2025-11-04 19:36:54,639 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,641 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,658 - [  INFO] - wrapper - User access is turn on.
-2025-11-04 19:36:54,659 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-04 19:36:54,662 - [ DEBUG] - see_page - Visit see page
-2025-11-04 19:36:54,662 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-04 19:36:54,664 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,664 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,698 - [  INFO] - wrapper - User access is turn on.
-2025-11-04 19:36:54,724 - [ DEBUG] - users_page - Visit users page
-2025-11-04 19:36:54,725 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, role FROM users ORDER BY id;
-2025-11-04 19:36:54,734 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,749 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,923 - [  INFO] - wrapper - User access is turn on.
-2025-11-04 19:36:54,930 - [ DEBUG] - users_page - Visit users page
-2025-11-04 19:36:54,930 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, role FROM users ORDER BY id;
-2025-11-04 19:36:54,931 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,933 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,947 - [  INFO] - wrapper - User access is turn on.
-2025-11-04 19:36:54,947 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-04 19:36:54,950 - [ DEBUG] - see_page - Visit see page
-2025-11-04 19:36:54,950 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-04 19:36:54,951 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,952 - [  INFO] - is_admin - User is admin
-2025-11-04 19:36:54,971 - [  INFO] - wrapper - User access is turn on.
-2025-11-04 19:36:54,982 - [ DEBUG] - users_page - Visit users page
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] Stávající pøipojení bylo vynucenì ukonèeno vzdáleným hostitelem
+2025-11-04 19:52:19,593 - [ ERROR] - default_exception_handler - Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] Stávající pøipojení bylo vynucenì ukonèeno vzdáleným hostitelem
+2025-11-04 19:52:19,594 - [ ERROR] - default_exception_handler - Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] Stávající pøipojení bylo vynucenì ukonèeno vzdáleným hostitelem
+2025-11-04 19:52:19,594 - [ ERROR] - default_exception_handler - Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] Stávající pøipojení bylo vynucenì ukonèeno vzdáleným hostitelem

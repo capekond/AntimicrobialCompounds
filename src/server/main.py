@@ -1,5 +1,3 @@
-import logging
-
 from decor import *
 from nicegui import ui, events
 import data_change
@@ -10,12 +8,10 @@ from io import StringIO
 import pandas as pd
 import web_part as web
 
-
 def root():
     ui.sub_pages({'/': main, '/add_page': add_page, '/see_page': see_page, '/import_page': import_page,
                   '/export_page': export_page, '/log_page': log_page, "/welcome": welcome_page, "/login": login_page,
                   "/logout_page": logout_page, "/users_page": users_page})
-
 
 def logout_page():
     if not LOGIN_ON:
@@ -27,7 +23,6 @@ def logout_page():
     data_change.set_login_role()
     dialog.open()
     ui.navigate.to("/")
-
 
 async def login_page():
     if not LOGIN_ON:
@@ -60,7 +55,6 @@ def main():
     web.data_info()
     web.footer(True, False, True, True, True, True, True, True)
 
-
 @logged
 def welcome_page():
     if db.no_data():
@@ -69,7 +63,6 @@ def welcome_page():
     web.sys_info('Welcome, let put some data first')
 
     web.footer(True, False, True, False, True, False, True)
-
 
 @logged
 async def add_page():
@@ -87,7 +80,6 @@ async def add_page():
     else:
         ui.label('Sorry, only admin can add records.')
         web.footer(True, True)
-
 
 @logged
 @has_records
@@ -250,7 +242,6 @@ def users_page():
             b_pwd.disable()
             b_delete.disable()
     web.footer(True, True)
-
 
 data_change.set_logs()
 logging.info("Start application...")
