@@ -39,7 +39,10 @@ import web_part as web
 #
 # s = ['aa', "bb", "cc"]
 # print("','".join(s))
+#
+# selection = [{'id': 'ondrej', 'role': 'admin'}, {'id': 'josef', 'role': 'user'}]
+# web.selected_ids = selection
+# print(web.get_ids())
 
-selection = [{'id': 'ondrej', 'role': 'admin'}, {'id': 'josef', 'role': 'user'}]
-web.selected_ids = selection
-print(web.get_ids())
+s={"a"}
+print(list(s)[0])

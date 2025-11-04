@@ -42,7 +42,7 @@ async def login_page():
     pwd = ui.input("Password:", password=True, password_toggle_button=True)
     go = ui.button("Login")
     await go.clicked()
-    role: str = db.get_role(name.value, pwd.value)
+    role: str = db.get_role(name.value,  pwd.value)
     if role:
         logging.info(f"Login ok as {role}")
         data_change.set_login_role(role)
@@ -215,15 +215,15 @@ def users_page():
         old_pwd.visible =  new_pwd.visible = conf_pwd.visible = True
         username.visible = role.visible = False
         approve = await dialog
-        if db.get_role(username.value, old_pwd.value) and confirm_pwd():
+        if db.get_role(data_change.get_ids(True)[0], old_pwd.value) and confirm_pwd():
             if approve:
                 db.change_pwd(data_change.get_ids(), new_pwd.value)
-                info_action(f"Password change for '{username.value}'")
+                info_action(f"Password changed")
         else:
             ui.notify("Sorry wrong old password")
 
     async def approve_delete():
-        if bool((data_change.get_ids(True)).intersection(USERS_CONST)):
+        if bool(set((data_change.get_ids(True))).intersection(USERS_CONST)):
             ui.notify(f"Cannot delete {",".join(USERS_CONST)}")
             return
         d_label.set_text(f"Delete {data_change.get_ids()} users?")

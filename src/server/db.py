@@ -91,7 +91,7 @@ def get_role(name: str, pwd: str = "") -> str:
         c, r = _execute_sql(f"SELECT * FROM users WHERE id='{name}' AND pwd = '{pwd}';")
     else:
         c, r = _execute_sql(f"SELECT * FROM users WHERE id='{name}';")
-        ui.notify(f"User '{name}' exists.")
+        ui.notify(f"User {name} exists.")
     return r[0][2] if r else ""
 
 def get_users():
@@ -104,4 +104,4 @@ def delete_user(usernames: str):
     _execute_sql(f"DELETE FROM users WHERE id IN ({usernames});")
 
 def change_pwd(username: str, new_pwd: str):
-    _execute_sql(f"UPDATE users SET pwd = '{new_pwd}' WHERE ID = '{username}';")
+    _execute_sql(f"UPDATE users SET pwd = '{new_pwd}' WHERE ID = {username};")

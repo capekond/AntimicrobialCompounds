@@ -7,11 +7,11 @@ import db
 from src.server.config import *
 
 
-def get_ids(is_list = False) -> str | set:
+def get_ids(is_list = False) -> str | list:
 
     print("selected_ids")
     print (web.selected_ids)
-    data = set([list(idxx.values())[0] for idxx in web.selected_ids])
+    data = [list(idxx.values())[0] for idxx in web.selected_ids]
     if is_list:
         return data
     else:
