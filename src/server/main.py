@@ -1,4 +1,5 @@
-import statistics
+import logging
+
 from decor import *
 from nicegui import ui, events
 import data_change
@@ -115,7 +116,6 @@ def see_page():
     ui.label('See records').classes("title")
     cols, rows = db.get_all_records()
     columns, rows = data_change.tbl_data(cols, rows)
-    print(columns, rows)
     tbl = ui.table(columns=columns, rows=rows, selection='multiple' if is_admin() else None,
                    pagination=TBL_ROW_COUNT,
                    on_select=lambda e: web.add_status(e.selection, [ab, ad]))
@@ -151,6 +151,7 @@ def import_page():
         ui.label("Only admin can import data.")
     web.footer(True, True)
 
+
 @logged
 @has_records
 async def export_page():
@@ -162,6 +163,7 @@ async def export_page():
         await ed.clicked()
         data_change.export_csv()
 
+
 @logged
 def log_page():
     logging.debug("Visit log page")
@@ -171,51 +173,74 @@ def log_page():
     log.push("\n".join(f.readlines()[-100:]))
     web.footer(True, True)
 
+
 @logged
 def users_page():
     with ui.dialog() as dialog, ui.card():
         d_label = ui.label()
         username = ui.input("New user name:")
-        new_pwd = ui.input("New password:")
-        conf_pwd = ui.input("Confirm new password:")
-        role = ui.select({'admin': 'Admin', 'user': 'User'},label="Type:")
+        old_pwd = ui.input("Old password:", password=True, password_toggle_button=True)
+        new_pwd = ui.input("New password:", password=True, password_toggle_button=True)
+        conf_pwd = ui.input("Confirm new password:", password=True, password_toggle_button=True)
+        role = ui.select({'admin': 'Admin', 'user': 'User'}, label="Type:")
         with ui.row():
             ui.button('Go', on_click=lambda: dialog.submit(True))
             ui.button('Cancel', on_click=lambda: dialog.submit(False))
 
-    async def approve_add():
-        d_label.set_text(f"Add new user")
-        approve = await dialog
+    def confirm_pwd() -> bool:
         if not new_pwd.value == conf_pwd.value:
             ui.notify("Confirmation password not fit")
-            return
-        if approve:
-            db.add_user(username.value, new_pwd.value, role.value)
+            return False
+        else:
+            return True
+
+    def info_action(info: str, reload=False):
+        logging.info(info)
+        ui.notify(info)
+        if reload:
             ui.navigate.reload()
+
+    async def approve_add():
+        d_label.set_text(f"Add new user")
+        username.visible = new_pwd.visible = conf_pwd.visible = role.visible = True
+        old_pwd.visible = False
+        role.value = "user"
+        approve = await dialog
+        if approve and confirm_pwd() and not db.get_role(username.value):
+            db.add_user(username.value, new_pwd.value, role.value)
+            info_action(f"User '{username.value}' added.", True)
 
     async def approve_pwd():
-        d_label.set_text(f"Set password for {len(web.selected_ids)} records?")
+        d_label.set_text(f"Set password for {data_change.get_ids()} ?")
+        old_pwd.visible =  new_pwd.visible = conf_pwd.visible = True
+        username.visible = role.visible = False
         approve = await dialog
-        if approve:
-            db.change_pwd([sid['id'] for sid in web.selected_ids], new_pwd)
-            ui.navigate.reload()
+        if db.get_role(username.value, old_pwd.value) and confirm_pwd():
+            if approve:
+                db.change_pwd(data_change.get_ids(), new_pwd.value)
+                info_action(f"Password change for '{username.value}'")
+        else:
+            ui.notify("Sorry wrong old password")
 
     async def approve_delete():
-        d_label.set_text(f"Delete {len(web.selected_ids)} users?")
+        if bool((data_change.get_ids(True)).intersection(USERS_CONST)):
+            ui.notify(f"Cannot delete {",".join(USERS_CONST)}")
+            return
+        d_label.set_text(f"Delete {data_change.get_ids()} users?")
+        username.visible = new_pwd.visible = conf_pwd.visible = role.visible = old_pwd.visible = False
         approve = await dialog
         if approve:
-            db.delete_user([sid['id'] for sid in web.selected_ids])
+            db.delete_user(data_change.get_ids())
             ui.navigate.reload()
+            info_action(f"Delete  '{data_change.get_ids()}'")
 
     logging.debug("Visit users page")
     ui.label('User management').classes("title")
     cols, rows = db.get_users()
     columns, rows = data_change.tbl_data(cols, rows)
-    print(columns, rows)
     tbl = ui.table(columns=columns, rows=rows, selection='multiple' if is_admin() else None,
                    pagination=TBL_ROW_COUNT,
-                   on_select=lambda e: web.add_status(e.selection, [b_delete],
-                                                      [b_pwd]))
+                   on_select=lambda e: web.add_status(e.selection, [b_delete],[b_pwd]))
     ui.input(placeholder="Add filter value").bind_value_to(tbl, 'filter')
     if is_admin():
         with ui.row():
@@ -225,6 +250,7 @@ def users_page():
             b_pwd.disable()
             b_delete.disable()
     web.footer(True, True)
+
 
 data_change.set_logs()
 logging.info("Start application...")

@@ -2,9 +2,12 @@ import statistics
 import db
 from nicegui import ui
 from config import *
-from data_change import is_admin
+import data_change
 
 selected_ids = []
+
+
+
 
 def sys_info(title: str = "About..."):
     async def show_edit():
@@ -27,7 +30,7 @@ def sys_info(title: str = "About..."):
     with ui.row():
         ui.html(content, sanitize=False)
         edit = ui.button("Edit", on_click=show_edit)
-        edit.visible = is_admin()
+        edit.visible = data_change.is_admin()
 
 def data_info(title:str = 'Information about active data'):
     res = db.get_records_ids()
@@ -58,7 +61,10 @@ def footer(logout: bool = False, main: bool = False, add: bool = False, see: boo
 
 def add_status(selection, buttons_multiple: list[ui.button] = (), buttons_one: list[ui.button] = () ):
     global selected_ids
+    print(selection)
     selected_ids = selection
+    print("selection")
+    print(selected_ids)
     for button in buttons_one:
         button.enable() if len(selected_ids) == 1 else button.disable()
     for button in buttons_multiple:

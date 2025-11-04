@@ -1,63 +1,63 @@
-2025-11-02 21:16:34,619 - [  INFO] - is_admin - User is admin
-2025-11-02 21:16:34,621 - [  INFO] - is_admin - User is admin
-2025-11-03 08:01:13,776 - [  INFO] - <module> - Start application...
-2025-11-03 08:01:13,782 - [ DEBUG] - __init__ - Using proactor: IocpProactor
-2025-11-03 08:01:14,444 - [  INFO] - wrapper - User access is turn on.
-2025-11-03 08:01:14,445 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-03 08:01:14,446 - [  INFO] - is_admin - User is admin
-2025-11-03 08:01:14,446 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-11-03 08:01:14,446 - [  INFO] - get_records_ids - Get 6 ids for status 'ACTIVE
-2025-11-03 08:01:18,282 - [  INFO] - wrapper - User access is turn on.
-2025-11-03 08:01:18,285 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-03 08:01:18,288 - [ DEBUG] - see_page - Visit see page
-2025-11-03 08:01:18,289 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-03 08:01:18,289 - [  INFO] - is_admin - User is admin
-2025-11-03 08:01:18,290 - [  INFO] - is_admin - User is admin
-2025-11-03 08:01:20,203 - [ DEBUG] - add_status - In table data selected row(s): [{'id': 519, 'value': 15, 'status': 'ACTIVE'}]
-2025-11-03 08:01:21,771 - [ DEBUG] - add_status - In table data selected row(s): [{'id': 519, 'value': 15, 'status': 'ACTIVE'}, {'id': 518, 'value': 15, 'status': 'ACTIVE'}]
-2025-11-03 08:01:39,457 - [  INFO] - wrapper - User access is turn on.
-2025-11-03 08:01:39,457 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
-2025-11-03 08:01:39,458 - [  INFO] - is_admin - User is admin
-2025-11-03 08:01:39,459 - [  INFO] - _execute_sql - SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
-2025-11-03 08:01:39,459 - [  INFO] - get_records_ids - Get 6 ids for status 'ACTIVE
-2025-11-03 08:01:41,057 - [  INFO] - wrapper - User access is turn on.
-2025-11-03 08:01:41,063 - [ DEBUG] - users_page - Visit users page
-2025-11-03 08:01:41,064 - [  INFO] - _execute_sql - SQL: SELECT name, role FROM users ORDER BY name;
-2025-11-03 08:01:41,064 - [  INFO] - is_admin - User is admin
-2025-11-03 08:01:41,065 - [  INFO] - is_admin - User is admin
-2025-11-03 08:01:47,026 - [ DEBUG] - add_status - In table data selected row(s): [{'name': 'josef', 'role': 'user'}]
-2025-11-03 08:01:48,290 - [ ERROR] - handle_exception - 'id'
-Traceback (most recent call last):
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\events.py", line 425, in handle_event
-    result = cast(Callable[[EventT], Any], handler)(arguments)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\elements\table.py", line 88, in handle_selection
-    self.selected = [row for row in self.selected if row[self.row_key] not in e.args['keys']]
-                                                     ~~~^^^^^^^^^^^^^^
-KeyError: 'id'
-2025-11-03 08:01:48,334 - [ ERROR] - handle_exception - 'id'
-Traceback (most recent call last):
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\events.py", line 425, in handle_event
-    result = cast(Callable[[EventT], Any], handler)(arguments)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\elements\table.py", line 88, in handle_selection
-    self.selected = [row for row in self.selected if row[self.row_key] not in e.args['keys']]
-                                                     ~~~^^^^^^^^^^^^^^
-KeyError: 'id'
-2025-11-03 08:01:49,442 - [ ERROR] - handle_exception - 'id'
-Traceback (most recent call last):
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\events.py", line 425, in handle_event
-    result = cast(Callable[[EventT], Any], handler)(arguments)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\ocape\AppData\Local\Programs\Python\Python312\Lib\site-packages\nicegui\elements\table.py", line 88, in handle_selection
-    self.selected = [row for row in self.selected if row[self.row_key] not in e.args['keys']]
-                                                     ~~~^^^^^^^^^^^^^^
-KeyError: 'id'
-2025-11-03 08:44:00,118 - [  INFO] - <module> - Start application...
-2025-11-03 08:44:00,125 - [ DEBUG] - __init__ - Using proactor: IocpProactor
-2025-11-03 08:44:17,688 - [  INFO] - <module> - Start application...
-2025-11-03 08:44:17,692 - [ DEBUG] - __init__ - Using proactor: IocpProactor
-2025-11-03 08:45:35,137 - [  INFO] - <module> - Start application...
-2025-11-03 08:45:35,142 - [ DEBUG] - __init__ - Using proactor: IocpProactor
-2025-11-03 08:45:36,373 - [  INFO] - wrapper - User access is turn on.
-2025-11-03 08:45:36,383 - [  INFO] - _execute_sql - SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-04 17:22:44,061 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-04 17:22:44,077 - [  INFO] - is_admin - User is admin
+2025-11-04 17:22:44,077 - [  INFO] - _execute_sql - Try execute SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-11-04 17:22:44,081 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
+2025-11-04 17:22:45,617 - [  INFO] - wrapper - User access is turn on.
+2025-11-04 17:22:45,617 - [ DEBUG] - users_page - Visit users page
+2025-11-04 17:22:45,617 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, role FROM users ORDER BY id;
+2025-11-04 17:22:45,625 - [  INFO] - is_admin - User is admin
+2025-11-04 17:22:45,625 - [  INFO] - is_admin - User is admin
+2025-11-04 17:22:45,739 - [  INFO] - wrapper - User access is turn on.
+2025-11-04 17:22:45,834 - [ DEBUG] - users_page - Visit users page
+2025-11-04 17:22:45,834 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, role FROM users ORDER BY id;
+2025-11-04 17:22:45,847 - [  INFO] - is_admin - User is admin
+2025-11-04 17:22:45,858 - [  INFO] - is_admin - User is admin
+2025-11-04 17:22:46,083 - [  INFO] - wrapper - User access is turn on.
+2025-11-04 17:22:46,145 - [ DEBUG] - users_page - Visit users page
+2025-11-04 17:22:46,145 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, role FROM users ORDER BY id;
+2025-11-04 17:22:46,145 - [  INFO] - is_admin - User is admin
+2025-11-04 17:22:46,150 - [  INFO] - is_admin - User is admin
+2025-11-04 17:22:46,166 - [  INFO] - wrapper - User access is turn on.
+2025-11-04 17:22:46,166 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-04 17:22:46,166 - [ DEBUG] - see_page - Visit see page
+2025-11-04 17:22:46,166 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-04 17:22:46,166 - [  INFO] - is_admin - User is admin
+2025-11-04 17:22:46,166 - [  INFO] - is_admin - User is admin
+2025-11-04 17:22:46,391 - [  INFO] - wrapper - User access is turn on.
+2025-11-04 17:22:46,539 - [ DEBUG] - users_page - Visit users page
+2025-11-04 17:22:46,550 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, role FROM users ORDER BY id;
+2025-11-04 17:22:46,555 - [  INFO] - is_admin - User is admin
+2025-11-04 17:22:46,555 - [  INFO] - is_admin - User is admin
+2025-11-04 17:22:46,931 - [  INFO] - wrapper - User access is turn on.
+2025-11-04 17:22:46,934 - [ DEBUG] - users_page - Visit users page
+2025-11-04 17:22:46,934 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, role FROM users ORDER BY id;
+2025-11-04 17:22:46,934 - [  INFO] - is_admin - User is admin
+2025-11-04 17:22:46,934 - [  INFO] - is_admin - User is admin
+2025-11-04 17:22:46,979 - [  INFO] - logout_page - Logout done
+2025-11-04 17:22:46,982 - [  INFO] - set_login_role - User role is set to 
+2025-11-04 17:22:46,982 - [  INFO] - wrapper - User access is turn on.
+2025-11-04 17:22:46,986 - [WARNING] - wrapper - No login user
+2025-11-04 17:22:46,986 - [  INFO] - is_admin - User is NOT admin
+2025-11-04 17:22:57,787 - [  INFO] - _execute_sql - Try execute SQL: SELECT * FROM users WHERE id='admin' AND pwd = 'admin';
+2025-11-04 17:22:57,791 - [ ERROR] - login_page - Cannot log name not exists or wrong password
+2025-11-04 17:23:00,383 - [  INFO] - wrapper - User access is turn on.
+2025-11-04 17:23:00,385 - [WARNING] - wrapper - No login user
+2025-11-04 17:23:00,407 - [  INFO] - is_admin - User is NOT admin
+2025-11-04 17:23:11,933 - [  INFO] - _execute_sql - Try execute SQL: SELECT * FROM users WHERE id='admin' AND pwd = '123456';
+2025-11-04 17:23:11,934 - [  INFO] - login_page - Login ok as admin
+2025-11-04 17:23:11,934 - [  INFO] - set_login_role - User role is set to admin
+2025-11-04 17:23:11,934 - [  INFO] - wrapper - User access is turn on.
+2025-11-04 17:23:11,934 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, value, status FROM data ORDER BY id;
+2025-11-04 17:23:11,939 - [  INFO] - is_admin - User is admin
+2025-11-04 17:23:11,939 - [  INFO] - _execute_sql - Try execute SQL: SELECT value FROM data WHERE status='ACTIVE' ORDER BY id;
+2025-11-04 17:23:11,942 - [  INFO] - get_records_ids - Get 4 ids for status 'ACTIVE
+2025-11-04 17:23:17,867 - [  INFO] - wrapper - User access is turn on.
+2025-11-04 17:23:17,877 - [ DEBUG] - users_page - Visit users page
+2025-11-04 17:23:17,877 - [  INFO] - _execute_sql - Try execute SQL: SELECT id, role FROM users ORDER BY id;
+2025-11-04 17:23:17,877 - [  INFO] - is_admin - User is admin
+2025-11-04 17:23:17,886 - [  INFO] - is_admin - User is admin
+2025-11-04 17:23:20,155 - [ DEBUG] - add_status - In table data selected row(s): [{'id': 'tonda', 'role': 'user'}]
+2025-11-04 17:23:25,526 - [  INFO] - _execute_sql - Try execute SQL: DELETE FROM users WHERE id IN ('tonda');
+2025-11-04 17:23:25,526 - [WARNING] - _execute_sql - No data in table
+2025-11-04 17:23:25,537 - [  INFO] - info_action - Delete  ''tonda''
+2025-11-04 17:23:25,573 - [  INFO] - wrapper - User access is turn on.

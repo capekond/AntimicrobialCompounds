@@ -1,10 +1,21 @@
 import csv
-import logging
+import web_part as web
 import numbers
 from logging.handlers import RotatingFileHandler
 from nicegui import app, ui
 import db
 from src.server.config import *
+
+
+def get_ids(is_list = False) -> str | set:
+
+    print("selected_ids")
+    print (web.selected_ids)
+    data = set([list(idxx.values())[0] for idxx in web.selected_ids])
+    if is_list:
+        return data
+    else:
+        return "'" + "', '".join(data) + "'"
 
 def is_number(s, ba: ui.button):
     try:
@@ -15,16 +26,16 @@ def is_number(s, ba: ui.button):
         ba.disable()
         return False
 
-def add_status(selection, ab: ui.button, ad: ui.button):
-    global selected_ids
-    selected_ids = selection
-    if len(selected_ids) > 0:
-        ab.enable()
-        ad.enable()
-    else:
-        ab.disable()
-        ad.disable()
-    logging.debug(f"In table data selected row(s): {selected_ids}")
+# def add_status(selection, ab: ui.button, ad: ui.button):
+#     global selected_ids
+#     selected_ids = selection
+#     if len(selected_ids) > 0:
+#         ab.enable()
+#         ad.enable()
+#     else:
+#         ab.disable()
+#         ad.disable()
+#     logging.debug(f"In table data selected row(s): {selected_ids}")
 
 def set_logs():
     log_formatter = logging.Formatter(LOG_FORMAT)
