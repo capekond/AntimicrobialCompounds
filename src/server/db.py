@@ -1,7 +1,7 @@
-import logging
 import sqlite3
 from typing import Any
 
+from nicegui import ui
 from sqlalchemy import create_engine
 import pandas as pd
 from config import *
@@ -24,6 +24,7 @@ def _data_import_error(df: pd.DataFrame):
     return err
 
 def _execute_sql(sql:str):
+    logging.info(f"Try execute SQL: {sql}")
     con = sqlite3.connect("../../data/data.db")
     cur = con.cursor()
     cur.execute(sql)
@@ -31,11 +32,10 @@ def _execute_sql(sql:str):
         cols = [i[0] for i in cur.description]
     except TypeError:
         cols = []
-        logging.warning("No data in data table")
+        logging.warning("No data in table")
     rows = cur.fetchall()
     con.commit()
     con.close()
-    logging.info(f"SQL: {sql}")
     return cols, rows
 
 def get_records_ids(status = 'ACTIVE') -> list[int]:
@@ -50,11 +50,11 @@ def get_all_records() -> tuple[list[Any], list[Any]]:
 def add_value(val):
     _execute_sql(f"INSERT INTO data(value, status) VALUES('{val}', 'NEW');")
 
-def update_status(sids:list[int], status: str):
-    _execute_sql(f"UPDATE data SET status = '{status}' WHERE ID IN ({",".join([str(ssid) for ssid in sids] ) });")
+def update_status(sids:str, status: str):
+    _execute_sql(f"UPDATE data SET status = '{status}' WHERE ID IN ({sids});")
 
-def delete_rows(sids:list[int]):
-    _execute_sql(f"DELETE FROM data WHERE id IN ({",".join([str(ssid) for ssid in sids])});")
+def delete_rows(sids:str):
+    _execute_sql(f"DELETE FROM data WHERE id IN ({sids});")
 
 def delete_all():
     _execute_sql("DELETE FROM data;")
@@ -85,3 +85,23 @@ def upload_data(import_scope:str, df: pd.DataFrame) -> str:
     info = df.to_sql('data', con=engine, if_exists='append')
     logging.info(f"Update affect {info} rows in data table.")
     return str(info)
+
+def get_role(name: str, pwd: str = "") -> str:
+    if pwd:
+        c, r = _execute_sql(f"SELECT * FROM users WHERE id='{name}' AND pwd = '{pwd}';")
+    else:
+        c, r = _execute_sql(f"SELECT * FROM users WHERE id='{name}';")
+        ui.notify(f"User {name} exists.")
+    return r[0][2] if r else ""
+
+def get_users():
+    return _execute_sql("SELECT id, role FROM users ORDER BY id;")
+
+def add_user(username: str ,new_pwd: str,role: str):
+    _execute_sql(f"INSERT INTO users(id, pwd, role) VALUES('{username}','{new_pwd}','{role}');")
+
+def delete_user(usernames: str):
+    _execute_sql(f"DELETE FROM users WHERE id IN ({usernames});")
+
+def change_pwd(username: str, new_pwd: str):
+    _execute_sql(f"UPDATE users SET pwd = '{new_pwd}' WHERE ID = {username};")
