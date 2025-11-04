@@ -99,17 +99,17 @@ def see_page():
             ui.button('No', on_click=lambda: dialog.submit(False))
 
     async def approve_activate():
-        d_label.set_text(f"Activate {len(web.selected_ids)} records?")
+        d_label.set_text(f"Activate {data_change.get_ids()} records?")
         approve = await dialog
         if approve:
-            db.update_status([sid['id'] for sid in web.selected_ids], "ACTIVE")
+            db.update_status(data_change.get_ids(), "ACTIVE")
             ui.navigate.reload()
 
     async def approve_delete():
-        d_label.set_text(f"Delete {len(web.selected_ids)} records?")
+        d_label.set_text(f"Delete {data_change.get_ids()} records?")
         approve = await dialog
         if approve:
-            db.delete_rows([sid['id'] for sid in web.selected_ids])
+            db.delete_rows(data_change.get_ids())
             ui.navigate.reload()
 
     logging.debug("Visit see page")

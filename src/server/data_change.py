@@ -6,16 +6,13 @@ from nicegui import app, ui
 import db
 from src.server.config import *
 
-
 def get_ids(is_list = False) -> str | list:
-
-    print("selected_ids")
-    print (web.selected_ids)
-    data = [list(idxx.values())[0] for idxx in web.selected_ids]
+    data = [list(id_x.values())[0] for id_x in web.selected_ids]
+    datas = [str(id_x) for id_x in data]
     if is_list:
-        return data
+        return datas
     else:
-        return "'" + "', '".join(data) + "'"
+        return "'" + "', '".join(datas) + "'"
 
 def is_number(s, ba: ui.button):
     try:
@@ -25,17 +22,6 @@ def is_number(s, ba: ui.button):
     except ValueError:
         ba.disable()
         return False
-
-# def add_status(selection, ab: ui.button, ad: ui.button):
-#     global selected_ids
-#     selected_ids = selection
-#     if len(selected_ids) > 0:
-#         ab.enable()
-#         ad.enable()
-#     else:
-#         ab.disable()
-#         ad.disable()
-#     logging.debug(f"In table data selected row(s): {selected_ids}")
 
 def set_logs():
     log_formatter = logging.Formatter(LOG_FORMAT)

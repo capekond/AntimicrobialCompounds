@@ -50,11 +50,11 @@ def get_all_records() -> tuple[list[Any], list[Any]]:
 def add_value(val):
     _execute_sql(f"INSERT INTO data(value, status) VALUES('{val}', 'NEW');")
 
-def update_status(sids:list[int], status: str):
-    _execute_sql(f"UPDATE data SET status = '{status}' WHERE ID IN ({",".join([str(ssid) for ssid in sids] ) });")
+def update_status(sids:str, status: str):
+    _execute_sql(f"UPDATE data SET status = '{status}' WHERE ID IN ({sids});")
 
-def delete_rows(sids:list[int]):
-    _execute_sql(f"DELETE FROM data WHERE id IN ('{"','".join([str(ssid) for ssid in sids])}');")
+def delete_rows(sids:str):
+    _execute_sql(f"DELETE FROM data WHERE id IN ({sids});")
 
 def delete_all():
     _execute_sql("DELETE FROM data;")
