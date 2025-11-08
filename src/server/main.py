@@ -149,11 +149,15 @@ def import_page():
 async def export_page():
     logging.debug("Visit export page")
     ui.label('Export records').classes("title")
+    exp_type = ui.checkbox("Export to excel")
     ed = ui.button(text="Export data")
     web.footer(True, True)
     while True:
         await ed.clicked()
-        data_change.export_csv()
+        if exp_type.value:
+            data_change.export_xls()
+        else:
+            data_change.export_csv()
 
 
 @logged
