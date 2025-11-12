@@ -1,4 +1,7 @@
 import csv
+
+import xlsxwriter
+
 import web_part as web
 import numbers
 from logging.handlers import RotatingFileHandler
@@ -49,7 +52,7 @@ def tbl_data(cols, rw):
 
 def export_csv():
     FILE_PATH = '../../tmp/data.csv'
-    logging.info("Export / download file")
+    logging.info("Export / download csv file")
     with open(FILE_PATH, 'w', newline='') as file:
         cols, rows = db.get_all_records()
         writer = csv.writer(file,doublequote=True, lineterminator="\n")
@@ -68,3 +71,20 @@ def is_admin() -> bool:
     r = app.storage.user.get('role', "") == 'admin'
     logging.info(f'User is { "" if r else "NOT "}admin' if LOGIN_ON else "User access is switch off")
     return r or (not LOGIN_ON)
+
+
+def export_xls():
+    FILE_PATH = '../../tmp/data.xlsx'
+    cols, rows = db.get_all_records()
+    logging.info("Export / download xls file")
+    workbook = xlsxwriter.Workbook(FILE_PATH)
+    worksheet = workbook.add_worksheet("Data")
+    bold = workbook.add_format({"bold": True})
+    num_format = workbook.add_format({"num_format": "0.00"})
+    for c, col in  enumerate(cols):
+        worksheet.write(0,c, col, bold)
+    for r, row in enumerate(rows, start=1):
+        for c, cell in  enumerate(row):
+            worksheet.write(r,c, cell, num_format if c == 1 else None)
+    workbook.close()
+    ui.download(FILE_PATH)
