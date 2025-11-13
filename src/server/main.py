@@ -125,8 +125,6 @@ def see_page():
 def import_page():
     async def handle_upload(e: events.UploadEventArguments):
         file_data = await e.file.read()
-
-
         upload_info = db.upload_data(import_scope.value, file_data, exp_type.value)
         tbl.set_visibility(True)
         tbl.add_row({'row_cnt': upload_info})
@@ -135,7 +133,7 @@ def import_page():
     logging.debug("Visit import page")
     ui.label('Import records').classes("title")
     if is_admin():
-        exp_type = ui.radio({'.xls*': "Excel", '.csv': "csv format"}, value='csv')
+        exp_type = ui.radio({'.xls*': "Excel", '.csv': "csv format"}, value='.csv')
         import_scope = ui.radio({'delete': "Delete old", 'update': "Update old", 'leave': "Leave old values"},
                                 value='update')
         ui.upload(on_upload=handle_upload, max_file_size=1_000_000).props(f'accept={exp_type}')
@@ -161,7 +159,6 @@ async def export_page():
         else:
             data_change.export_csv()
 
-
 @logged
 def log_page():
     logging.debug("Visit log page")
@@ -170,7 +167,6 @@ def log_page():
     log = ui.log(max_lines=100).classes("w-screen")
     log.push("\n".join(f.readlines()[-100:]))
     web.footer(True, True)
-
 
 @logged
 def users_page():
