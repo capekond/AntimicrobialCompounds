@@ -8,6 +8,8 @@ https://nicegui.io/
 
 https://www.sqlite.org/
 
+https://xlsxwriter.readthedocs.io/example_demo.html
+
 ## Limitations
 - no deployment script   
 - no password, no encryption database 
@@ -17,7 +19,7 @@ https://www.sqlite.org/
 5. catch and log errors, provide info to user
 7. requirements file
 8. fix problem with update on  main page
-10. export pdf
+10. export xls
 ## DONE
 1. user update database and refresh table
 6. use property file for global variable
