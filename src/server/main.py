@@ -136,7 +136,7 @@ def import_page():
         exp_type = ui.radio({'.xls*': "Excel", '.csv': "csv format"}, value='.csv')
         import_scope = ui.radio({'delete': "Delete old", 'update': "Update old", 'leave': "Leave old values"},
                                 value='update')
-        ui.upload(on_upload=handle_upload, max_file_size=1_000_000).props(f'accept={exp_type}')
+        ui.upload(on_upload=handle_upload, max_file_size=1_000_000).props(f'accept=.csv|.xls*')
         tbl = ui.table(columns=columns, rows=[]).classes('h-52').props('virtual-scroll')
         tbl.set_visibility(False)
     else:
