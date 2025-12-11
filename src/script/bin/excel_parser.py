@@ -1,4 +1,4 @@
-from src.script.arguments import Arguments
+from src.script.bin.arguments import Arguments
 import openpyxl
 import pandas
 import pandasql
@@ -34,9 +34,9 @@ class ExcelParser(Arguments):
         code = ""
         activity = ""
         raw_data = pandas.DataFrame(columns=self.COLUMNS)
-        self.log(f"Total number of sheets in scope {len(self.p.sheets)}:")
+        self.log.info(f"There is {len(self.p.sheets)} sheet(s) selected.")
         for sheet_name in self.p.sheets:
-            self.log(f"Building data for Excel worksheet {str(sheet_name)}.")
+            self.log.info(f"Building data for Excel worksheet {str(sheet_name)}.")
             for row_number in range(1, wbi[str(sheet_name)].max_row):
                 lead = wbi[sheet_name].cell(row=row_number, column=2)
                 if lead.value:
@@ -66,14 +66,16 @@ class ExcelParser(Arguments):
                     try:
                         raw_code = str(lead.offset(row=-3, column=2).value)
                         if not self.is_code(raw_code):
-                            report_err.loc[len(report_err)] = [str(sheet_name), f"D{row_number - 3}", str(raw_code),
-                                                               "The format of raw code could be '# - code'"]
+                            report_err.loc[len(report_err)] = [str(sheet_name), f"D{row_number - 3}", str(raw_code), "The format of raw code could be '# - code'"]
                     except ValueError as e:
-                        report_err.loc[len(report_err)] = [str(sheet_name), f"B{row_number}", str(lead.value),
-                                                           f"Wrong position of leading '1' {e}"]
-
+                        report_err.loc[len(report_err)] = [str(sheet_name), f"B{row_number}", str(lead.value), f"Wrong position of leading '1' {e}"]
         if len(report_err) > 0:
-            self.log("Errors found and will ge reported.")
+            self.log.warning("Errors found and will ge reported.")
+            err = set(report_err['sheet'])
+            valid = ", ".join(set(self.p.sheets) - err)
+            err = ",".join(err)
+            self.log.error(f"The sheets with errors: '{err}'")
+            self.log.info(f"The valid sheets without errors: '{valid}'")
         return report_err
 
     def get_final_content(self, raw_data: pandas.DataFrame) -> pandas.DataFrame:

@@ -28,3 +28,9 @@ https://www.sqlite.org/
 12. enable and disable login
 13. can change welcome screen by markdown
   
+# SCRIPT
+export sheet per MIC, MBC 
+
+use case:
+- zakladni raw file kam se pridava dalsi data
+- raw data -> export
