@@ -21,7 +21,7 @@ class Arguments:
         self.DEFAULT_RAW_EXPORT = os.path.join(os.getcwd(), f"export_raw-{ts}.{self.EXCEL_EXTENSION}")
         self.DEFAULT_DRY_RUN = os.path.join(os.getcwd(), f"errors-{ts}.{self.EXCEL_EXTENSION}")
         self.SUPPORTED_EXTENSIONS = ["csv", self.EXCEL_EXTENSION]
-        self.TYPES_ESSAY = ["MBC", "MIC"]
+        self.TYPES_ESSAY = {"MBC": 7, "MIC": 4}
         self.p = self.get_args()
         logging.addLevelName(45, 'SHOW')
         logging.basicConfig(format='%(asctime)s %(levelname)s :%(message)s',level=logging.DEBUG if self.p.verbose else 45)
@@ -52,9 +52,9 @@ class Arguments:
         return parser.parse_args()
 
     def check_args(self):
-        self.p.type_essay = self.p.type_essay if self.p.type_essay else self.TYPES_ESSAY
-        if  not (sorted(self.p.type_essay[0]) == self.TYPES_ESSAY  or self.p.type_essay in self.TYPES_ESSAY):
-            self.log.critical(f"{self.p.type_essay} is not in supported list {self.TYPES_ESSAY}")
+        self.p.type_essay = self.p.type_essay if self.p.type_essay else [*self.TYPES_ESSAY]
+        if not (self.p.type_essay[0] in [*self.TYPES_ESSAY] or sorted(self.p.type_essay) == [*self.TYPES_ESSAY]):
+            self.log.critical(f"{self.p.type_essay} is not in supported list {[*self.TYPES_ESSAY]}")
             exit(1)
         if not self.p.import_file:
             self.log.critical("Please add input data file -i, --import_file")
@@ -70,12 +70,12 @@ class Arguments:
             except KeyError:
                 self.log.info(f"Worksheet '{sheet_name}' not exists. It is excluded")
         self.p.sheets = sheet_ok_manes
-        if self.p.export_raw:
-            s = str(self.p.export_raw)
+        if self.p.export_raw or self.p.export_raw_file:
+            s = str(self.p.export_raw_file)
             if not (s[s.rfind(".") + 1:] in self.SUPPORTED_EXTENSIONS):
-                self.p.export_raw = s + "." + self.EXCEL_EXTENSION
+                self.p.export_raw_file = s + "." + self.EXCEL_EXTENSION
                 self.p.ext = self.EXCEL_EXTENSION
-                self.log.info(f"Wrong extension for raw export file. File name was changed to {self.p.export_raw} ")
+                self.log.info(f"Wrong extension for raw export file. File name was changed to {self.p.export_raw_file} ")
             else:
                 self.p.ext = s[s.rfind(".") + 1:]
         if not self.p.sheets:

@@ -31,6 +31,7 @@ class ExcelParser(Arguments):
         return res
 
     def get_raw_data(self, wbi: openpyxl.workbook.Workbook) -> pandas.DataFrame:
+        # todo add type_essay column
         code = ""
         activity = ""
         raw_data = pandas.DataFrame(columns=self.COLUMNS)
@@ -79,11 +80,13 @@ class ExcelParser(Arguments):
         return report_err
 
     def get_final_content(self, raw_data: pandas.DataFrame) -> pandas.DataFrame:
+        # todo add multiple sheets named by list type_essay from type_essay column from raw data
         limited_data: pandas.DataFrame = raw_data[['pathogen', 'code', 'activity', 'item', 'item_value']]
         build_item_value = pandasql.sqldf(self.SQL, locals())
         return build_item_value.pivot_table(values='item_value', index=['code'], columns=['pathogen'], aggfunc="first")
 
     def excel_final_formatting(self) -> None:
+        # todo formate each sheet named by list type_essay from type_essay column from raw data
         wb = openpyxl.load_workbook(self.p.export_excel_file, read_only=False)
         ws = wb.active
         for c in ws['A1':'AA1'][0]:
