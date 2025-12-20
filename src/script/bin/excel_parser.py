@@ -18,9 +18,10 @@ class ExcelParser(Arguments):
         self.COLUMNS_ERR = ["sheet", "cell", "actual value", "error_description"]
         self.ITEM_COL_OFFSET = 2
         self.MINIMAL_CODE_LEN = 6
-        self.SQL = """SELECT pathogen, code, item_value, count(item_value) as cnt_item 
-                FROM raw_data 
-                WHERE activity = 'MIC'
+        self.SQL = """
+                SELECT pathogen, code, item_value, count(item_value) as cnt_item 
+                    FROM raw_data 
+                    WHERE activity = '{activity}', 
                 GROUP BY pathogen, code, activity, item_value
                 HAVING count(item_value) > 1
             """
@@ -79,11 +80,23 @@ class ExcelParser(Arguments):
             self.log.info(f"The valid sheets without errors: '{valid}'")
         return report_err
 
-    def get_final_content(self, raw_data: pandas.DataFrame) -> pandas.DataFrame:
+    def get_final_content(self, raw_data: pandas.DataFrame) -> dict:
         # todo add multiple sheets named by list type_essay from type_essay column from raw data
-        limited_data: pandas.DataFrame = raw_data[['pathogen', 'code', 'activity', 'item', 'item_value']]
-        build_item_value = pandasql.sqldf(self.SQL, locals())
-        return build_item_value.pivot_table(values='item_value', index=['code'], columns=['pathogen'], aggfunc="first")
+        res = dict()
+        for tpe in self.p.type_essay:
+            limited_data: pandas.DataFrame = raw_data[['pathogen', 'code', 'item', 'item_value']]
+            sql = self.SQL.format(activity = tpe)
+            build_item_value: pandas.DataFrame = pandasql.sqldf(sql, locals())
+            build_item_value.pivot_table(values='item_value', index=['code'], columns=['pathogen'], aggfunc="first")
+            res.update({tpe: build_item_value})
+        return res
+
+    def excel_final(self, workbook_data: dict) -> None:
+        # todo add content with list type_essay to Excel final
+        for sheet in workbook_data:
+            content = workbook_data[sheet]
+        self.save_file(tba, self.p.export_excel_file)
+
 
     def excel_final_formatting(self) -> None:
         # todo formate each sheet named by list type_essay from type_essay column from raw data

@@ -29,8 +29,9 @@ class Main(ExcelParser):
             self.log.info(f"Raw data exported to {self.p.export_raw_file}")
         if self.p.export_excel or self.p.export_excel_file:
             self.p.export_excel_file = self.p.export_excel_file if self.p.export_excel_file else self.DEFAULT_EXPORT
-            pivot_data = self.get_final_content(raw_data)
-            self.save_file(pivot_data.to_excel, self.p.export_excel_file)
+            final_data = self.get_final_content(raw_data)
+            self.excel_final(final_data, self.p.export_excel_file)
+            # self.save_file(final_data.to_excel, self.p.export_excel_file)
             self.excel_final_formatting()
             self.log.info(f"Final data exported to file {self.p.export_excel_file}")
 

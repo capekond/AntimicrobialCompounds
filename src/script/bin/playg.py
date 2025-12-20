@@ -27,3 +27,8 @@ err = set(df['TransactionID'])
 print(err)
 transId = [99, 101, 102, 103, 101, 104, 105, 103, 110]
 print(set(transId) - err)
+
+ss = """ aaaa {s}   bbbb"""
+s = "ox"
+print(ss.format(s=s))
+
