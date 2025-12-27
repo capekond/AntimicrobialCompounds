@@ -124,19 +124,19 @@ def see_page():
 @logged
 def import_page():
     async def handle_upload(e: events.UploadEventArguments):
-        file_data = await e.file.text()
-        pd_data = pd.read_csv(StringIO(file_data))
+        file_data = await e.file.read()
+        upload_info = db.upload_data(import_scope.value, file_data, exp_type.value)
         tbl.set_visibility(True)
-        upload_info = db.upload_data(import_scope.value, pd_data)
         tbl.add_row({'row_cnt': upload_info})
 
     columns = [{'name': 'row_cnt', 'label': 'Added rows', 'field': 'row_cnt'}]
     logging.debug("Visit import page")
     ui.label('Import records').classes("title")
     if is_admin():
+        exp_type = ui.radio({'.xls*': "Excel", '.csv': "csv format"}, value='.csv')
         import_scope = ui.radio({'delete': "Delete old", 'update': "Update old", 'leave': "Leave old values"},
                                 value='update')
-        ui.upload(on_upload=handle_upload, max_file_size=1_000_000).props('accept=.csv')
+        ui.upload(on_upload=handle_upload, max_file_size=1_000_000).props(f'accept=.csv|.xls*')
         tbl = ui.table(columns=columns, rows=[]).classes('h-52').props('virtual-scroll')
         tbl.set_visibility(False)
     else:
@@ -149,12 +149,15 @@ def import_page():
 async def export_page():
     logging.debug("Visit export page")
     ui.label('Export records').classes("title")
+    exp_type = ui.radio ({'xls': "Excel", 'csv': "csv format"},value='csv')
     ed = ui.button(text="Export data")
     web.footer(True, True)
     while True:
         await ed.clicked()
-        data_change.export_csv()
-
+        if exp_type.value == 'xls':
+            data_change.export_xls()
+        else:
+            data_change.export_csv()
 
 @logged
 def log_page():
@@ -164,7 +167,6 @@ def log_page():
     log = ui.log(max_lines=100).classes("w-screen")
     log.push("\n".join(f.readlines()[-100:]))
     web.footer(True, True)
-
 
 @logged
 def users_page():
