@@ -1,3 +1,8 @@
+from datetime import datetime
+import os
+
+from pandas import DataFrame
+
 from src.script.bin.arguments import Arguments
 import openpyxl
 import pandas
@@ -14,7 +19,7 @@ class ExcelParser(Arguments):
         super().__init__()
         self.ACTIVITIES = ["MIC", "MBC", "MICb", "gentamicin"]
         self.ITEMS = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1]
-        self.COLUMNS = ["sheet", "row_id", "code", "pathogen", "activity", "item", "item_value"]
+        self.COLUMNS = ["sheet", "row_id", "code", "pathogen", "activity", "item", "item_value", "timestamp"]
         self.COLUMNS_ERR = ["sheet", "cell", "actual value", "error_description"]
         self.ITEM_COL_OFFSET = 2
         self.MINIMAL_CODE_LEN = 6
@@ -32,7 +37,8 @@ class ExcelParser(Arguments):
         return res
 
     def get_raw_data(self, wbi: openpyxl.workbook.Workbook) -> pandas.DataFrame:
-        # todo add type_essay column
+        # todo add type_essay column, add timestamp
+        timestamp: str = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
         code = ""
         activity = ""
         raw_data = pandas.DataFrame(columns=self.COLUMNS)
@@ -53,7 +59,7 @@ class ExcelParser(Arguments):
                             activity = self.ACTIVITIES[activity_id]
                             activity_id += 1
                         item_v = str(lead.offset(row=0, column=self.ITEM_COL_OFFSET + item_id).value)
-                        raw_data.loc[len(raw_data)] = [str(sheet_name), row_id, code, pathogen, activity, item, item_v]
+                        raw_data.loc[len(raw_data)] = [str(sheet_name), row_id, code, pathogen, activity, item, item_v,timestamp]
         return raw_data
 
     def approve_data(self, wbi) -> pandas.DataFrame:
@@ -84,7 +90,7 @@ class ExcelParser(Arguments):
         # todo add multiple sheets named by list type_essay from type_essay column from raw data
         res = dict()
         for tpe in self.p.type_essay:
-            limited_data: pandas.DataFrame = raw_data[['pathogen', 'code', 'item', 'item_value']]
+            limited_data: pandas.DataFrame = raw_data[['pathogen', 'code', 'item', 'item_value', 'timestamp']]
             sql = self.SQL.format(activity = tpe)
             build_item_value: pandas.DataFrame = pandasql.sqldf(sql, locals())
             build_item_value.pivot_table(values='item_value', index=['code'], columns=['pathogen'], aggfunc="first")
@@ -106,3 +112,41 @@ class ExcelParser(Arguments):
             c.alignment = Alignment(textRotation=90)
             c.font = Font(bold=False)
         wb.save(filename=self.p.export_excel_file)
+
+    def check_file(self, file_path) -> bool:
+        directory = os.path.dirname(file_path)
+        if directory:
+            if not os.path.exists(directory):
+                try:
+                    os.makedirs(directory)
+                    self.log.warning(f"New directory created: '{directory}'")
+                except Exception as e:
+                    print(f"Error creating directory '{directory}': {e}")
+                    exit(0)
+        return os.path.exists(file_path)
+
+    def append_raw_data(self, wbi: openpyxl.workbook.workbook.Workbook ) -> DataFrame | None:
+        raw_data = self.get_raw_data(wbi)
+        if not self.check_file(self.p.raw_data):
+            self.save_file(raw_data.to_excel if self.p.ext == self.EXCEL_EXTENSION else raw_data.to_csv, self.p.export_raw_file)
+            try:
+                if self.p.ext == self.EXCEL_EXTENSION:
+                    raw_data.to_excel(self.p.raw_data)
+                else:
+                    raw_data.to_csv(self.p.raw_data)
+                return raw_data
+            except Exception as e:
+                self.log.warning(f"Error saving data to new file '{self.p.raw_data}': {e}")
+                exit(1)
+        else:
+            #todo append data to existing scv/ excel file
+            try:
+                if self.p.ext == self.EXCEL_EXTENSION:
+                    ws = wbi.active
+                    ws.append(raw_data.itertuples(index=False))
+                    wbi.save(filename=self.p.raw_data)
+                else:
+
+            except Exception as e:
+                self.log.warning(f"Error adding data to file '{self.p.raw_data}': {e}")
+                exit(1)
