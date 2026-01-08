@@ -1,6 +1,7 @@
 import argparse
 import datetime
 import os
+from os import name
 
 import openpyxl
 from sqlalchemy import true
@@ -17,12 +18,9 @@ class Arguments:
 
     def __init__(self):
         ts = int((datetime.datetime.now()).timestamp())
-        self.DATABASES = {"SQ_LITE" : "DRIVER={SQLite3 ODBC Driver};SERVER=localhost;DATABASE=test.db;Trusted_connection=yes"}
-        # self.EXCEL_EXTENSION = "xlsx"
-        # self.DEFAULT_EXPORT = os.path.join(os.getcwd(), f"export-{ts}.{self.EXCEL_EXTENSION}")
-        # self.DEFAULT_RAW_EXPORT = os.path.join(os.getcwd(), f"export_raw-{ts}.{self.EXCEL_EXTENSION}")
-        # self.DEFAULT_DRY_RUN = os.path.join(os.getcwd(), f"errors-{ts}.{self.EXCEL_EXTENSION}")
-        self.SUPPORTED_EXTENSIONS = ["csv", self.EXCEL_EXTENSION]
+        self.DATABASE = {"SQ_LITE" : "DRIVER={SQLite3 ODBC Driver};SERVER=localhost;DATABASE=test.db;Trusted_connection=yes"}
+        self.EXCEL_EXTENSION = "xlsx"
+        self.DEFAULT_EXPORT = os.path.join(os.getcwd(), f"export-{ts}.xlsx")
         self.TYPES_ESSAY = ["MBC", "MIC"]
         self.p = self.get_args()
         logging.addLevelName(45, 'SHOW')
@@ -35,22 +33,21 @@ class Arguments:
     def get_args(self):
         parser = argparse.ArgumentParser()
         generic  = parser.add_argument_group('Generic arguments')
-        inp = parser.add_argument_group('Input data')
-        raw = parser.add_argument_group('Raw data file manipulation')
+        imp = parser.add_argument_group('Input data')
+        raw = parser.add_argument_group('Import data to database')
         final = parser.add_argument_group('Final data file manipulation')
         generic.add_argument("-v", "--verbose", action='store_true', help="Verbose output")
         generic.add_argument("-n", "--no_question", action='store_true', help="Disable approval question")
-        generic.add_argument("-d", "--dry_run", action='store_true', help="Dry run: If present -I validate Excel import data. Optional argument is file name with dry run results. If present -R provide info of raw data file (counts group counts by timestamps), use with -v")
-        inp.add_argument("-i", "--import_file", nargs='*', type=str, help="Imported Excel file with data sources. If missing, raw file data can be used. The file must have expected content. To check the content use parameter --dry_run. ")
-        raw.add_argument("-E", "--data_excel", nargs=1, type=str, help=f"Excel data raw file. If the file already exists, data will be add with new timestamp")
-        raw.add_argument("-C", "--data_csv", nargs=1, type=str, help=f"CSV Data raw file. If the file already exists, data will be add with new timestamp")
-        raw.add_argument("-D", "--data_db", nargs=1, type=str, help=f"Data to database. Possible database connections: {self.DATABASES}. Data will be add with new timestamp")
-        raw.add_argument("-rl", "--data_list", action='store_true', help="If present, the items with timestamp following -md -mj will be handled as list. If missing -md -mj accept only 2 value as boundaries form ... to. The rounding i.e  2025.12 could be used")
-        raw.add_argument("-rd", "--data_delete", type=str, help="From given raw file, delete records with timestamps from the list or in range (depend on -rl set")
-        raw.add_argument("-rj", "--data_join", type=str, help="From given raw file, join records with timestamps from the list or in range (depend on -rl set). Actual timestamp as is used for joined data")
-        raw.add_argument("-rg", "--data_get", type=str, help="Set specific scope for --export_excel from the list or in range (depend on -rl set).")
+        generic.add_argument("-D", "--dry_run", action='store_true', help="Dry run: If present -I validate Excel import data. Optional argument is file name with dry run results. If present -R provide info of raw data file (counts group counts by timestamps), use with -v")
+        imp.add_argument("-i", "--import", name="imp", nargs=1, type=str, help=f"Import Excel file with data sources to database {self.DATABASE}. To check the content use parameter --dry_run. ")
+        imp.add_argument("-I", "--import_show", nargs=1, type=str, help=f"Import showed data file to database {self.DATABASE}. To check the content use parameter --dry_run. ")
+        imp.add_argument("-s", "--sheets", nargs='+', type=str, help="Source worksheets. If missing all worksheets will be used in  given import file or database")
+        raw.add_argument("-r", "--is_range", nargs=2, help=" -d -j -g use  2 value as boundaries form ... to. The rounding i.e  2025.12 could be used")
+        raw.add_argument("-l", "--is_list", nargs='+', help=" -d -j -g use values as list.")
+        raw.add_argument("-S", "--show", nargs=1, help="Show database data in given list or range The rounding i.e  2025.12 could be used")
+        raw.add_argument("-d", "--delete", type=str, help="Delete records with timestamps as the list or range (if -r is present)")
+        raw.add_argument("-j", "--join", type=str, help="Join records with timestamps as the list or range (if -r is present). Actual timestamp as is used for joined data")
         final.add_argument("-e", "--export", nargs='*', help=f"Exported final excel file. Default value example: {self.DEFAULT_EXPORT}")
-        final.add_argument("-s", "--sheets", nargs='+', type=str, help="Source worksheets. If missing all worksheets will be used in given range --raw_data [--raw_data_get]")
         final.add_argument("-t", "--type_essay", nargs='+', help="MIC and / or MBC, sheets in export file ")
         return parser.parse_args()
 

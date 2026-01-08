@@ -12,12 +12,14 @@ class Main(ExcelParser):
         wbi = None
         self.check_args()
         new_raw_data = pandas.DataFrame()
-
         if self.p.dry_run:
-            if self.p.import_file:
+            if self.p.imp:
                 err_data = self.approve_data(wbi)
                 err_data.to_excel("errors_" + self.p.import_file)
                 self.log.info(f"Errors exported to file errors_{self.p.import_file}. Count of errors {len(err_data)}")
+            if self.p.import_show:
+                pass
+            # add database content overview
             exit(0)
 # continue
         if self.p.import_file:

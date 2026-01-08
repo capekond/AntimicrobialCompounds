@@ -3,6 +3,47 @@ The increase in the number of bacterial strains resistant to known antibiotics c
 
 ## Prerequisites 
 - python 3.12
+# SCRIPT
+```
+options:
+
+  -h, --help            show this help message and exit
+
+Generic arguments:
+  -v, --verbose         Verbose output
+  -n, --no_question     Disable approval question
+  -D, --dry_run         Dry run: If present -I validate Excel import data. Optional argument is file name with dry run results.
+                        If present -R provide info of raw data file (counts group counts by timestamps), use with -v
+
+Input data:
+
+  -i, --import [Excel file name]
+                        Import Excel file with data sources to database. To check the content use parameter --dry_run.
+  -s, --sheets [list of sheets in import file]
+                        Source worksheets. If missing all worksheets will be used in given import file or database
+
+Import data to database:
+
+  -r, --is_range [FROM TO]
+                        -d -j -g use 2 value as boundaries form ... to. The rounding i.e 2025.12 could be used
+  -l, --is_list  [names of list]
+                        -d -j -g use values as list.
+  -d, --delete
+                        Delete records with timestamps as the list or range (if -r is present)
+  -j, --join 
+                        Join records with timestamps as the list or range (if -r is present). Actual timestamp as is used for joined data.
+
+Final data file manipulation:
+
+  -e, --export Exported [final excel file]
+                        Default value example: C:\Users\ocape\PycharmProjects\AntimicrobialCompounds\src\script\export-1767888617.xlsx
+
+  -t, --type_essay [TYPE_ESSAY ...] 
+                        MIC and / or MBC, sheets in export file 
+                        
+```
+
+# GUI
 ## Used tools 
 https://nicegui.io/
 
@@ -27,10 +68,3 @@ https://www.sqlite.org/
 11. links to shared function
 12. enable and disable login
 13. can change welcome screen by markdown
-  
-# SCRIPT
-export sheet per MIC, MBC 
-
-use case:
-- zakladni raw file kam se pridava dalsi data
-- raw data -> export
