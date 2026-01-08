@@ -1,3 +1,4 @@
+import openpyxl
 import pandas
 
 from src.script.bin.excel_parser import ExcelParser
@@ -8,33 +9,33 @@ class Main(ExcelParser):
         super().__init__()
 
     def main(self) -> None:
-        raw_data = pandas.DataFrame()
-        try:
-            wbi = self.check_args()
-        except FileNotFoundError as e:
-            self.log.error(e)
-            exit(1)
-        except PermissionError as e:
-            self.log.error(e)
-            exit(1)
+        wbi = None
+        self.check_args()
+        new_raw_data = pandas.DataFrame()
         if self.p.dry_run:
-            err_data = self.approve_data(wbi)
-            err_data.to_excel(self.p.dry_run_file)
-            self.log.info(f"Errors exported to file {self.p.dry_run_file}. Count of errors {len(err_data)}")
-        if self.p.export_raw or self.p.export_raw_file or self.p.export_excel or self.p.export_excel_file:
-            raw_data = self.get_raw_data(wbi)
-        if self.p.export_raw or self.p.export_raw_file:
-            self.p.export_raw_file = self.p.export_raw_file if self.p.export_raw_file else self.DEFAULT_RAW_EXPORT
-            self.save_file(raw_data.to_excel if self.p.ext == self.EXCEL_EXTENSION else raw_data.to_csv, self.p.export_raw_file)
-            self.log.info(f"Raw data exported to {self.p.export_raw_file}")
-        if self.p.export_excel or self.p.export_excel_file:
-            self.p.export_excel_file = self.p.export_excel_file if self.p.export_excel_file else self.DEFAULT_EXPORT
-            final_data = self.get_final_content(raw_data)
-            self.excel_final(final_data, self.p.export_excel_file)
-            # self.save_file(final_data.to_excel, self.p.export_excel_file)
-            self.excel_final_formatting()
-            self.log.info(f"Final data exported to file {self.p.export_excel_file}")
+            if self.p.imp:
+                err_data = self.approve_data(wbi)
+                err_data.to_excel("errors_" + self.p.import_file)
+                self.log.info(f"Errors exported to file errors_{self.p.import_file}. Count of errors {len(err_data)}")
+            if self.p.import_show:
+                pass
+            # add database content overview
+            exit(0)
+# continue
+        if self.p.import_file:
+            wbi = self.open_file(openpyxl.load_workbook, self.p.import_file)
+            new_raw_data = self.get_raw_data(wbi)
+            self.log.info(f"From import data file {self.p.import_file} received {len(new_raw_data)}")
 
+
+
+        if self.p.raw_data and self.p.export_excel:
+            self.log.info(f"From raw data file {self.p.raw_data} exported to final data {self.p.export_excel}")
+
+
+
+        if self.p.dry_run and self.p.raw_data:
+            self.log.info(f"Raw data content overview.")
 
 if __name__ == "__main__":
     m = Main()
