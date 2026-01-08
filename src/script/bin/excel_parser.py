@@ -101,7 +101,7 @@ class ExcelParser(Arguments):
         # todo add content with list type_essay to Excel final
         for sheet in workbook_data:
             content = workbook_data[sheet]
-        self.save_file(tba, self.p.export_excel_file)
+        # self.save_file(tba, self.p.export_excel_file)
 
 
     def excel_final_formatting(self) -> None:
@@ -146,6 +146,7 @@ class ExcelParser(Arguments):
                     ws.append(raw_data.itertuples(index=False))
                     wbi.save(filename=self.p.raw_data)
                 else:
+                    pass
 
             except Exception as e:
                 self.log.warning(f"Error adding data to file '{self.p.raw_data}': {e}")
